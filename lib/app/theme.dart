@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class AppTheme {
   // Private constructor
@@ -53,14 +54,10 @@ class AppTheme {
     colorScheme: ColorScheme.light(
       primary: primaryColor,
       secondary: secondaryColor,
-      error: errorColor,
+      tertiary: accentColor,
       background: lightBackgroundColor,
       surface: lightCardColor,
-      onPrimary: Colors.white,
-      onSecondary: Colors.white,
-      onBackground: lightTextPrimaryColor,
-      onSurface: lightTextPrimaryColor,
-      onError: Colors.white,
+      error: errorColor,
     ),
     scaffoldBackgroundColor: lightBackgroundColor,
     cardTheme: CardTheme(
@@ -71,75 +68,17 @@ class AppTheme {
       ),
     ),
     appBarTheme: AppBarTheme(
-      backgroundColor: primaryColor,
-      foregroundColor: Colors.white,
+      backgroundColor: lightCardColor,
+      foregroundColor: primaryColor,
       elevation: 0,
-      centerTitle: false,
+      centerTitle: true,
       titleTextStyle: TextStyle(
         fontFamily: fontFamily,
         fontWeight: FontWeight.bold,
         fontSize: 20,
       ),
     ),
-    textTheme: TextTheme(
-      displayLarge: TextStyle(
-        fontFamily: fontFamily,
-        color: lightTextPrimaryColor,
-        fontWeight: FontWeight.bold,
-      ),
-      displayMedium: TextStyle(
-        fontFamily: fontFamily,
-        color: lightTextPrimaryColor,
-        fontWeight: FontWeight.bold,
-      ),
-      displaySmall: TextStyle(
-        fontFamily: fontFamily,
-        color: lightTextPrimaryColor,
-        fontWeight: FontWeight.bold,
-      ),
-      headlineMedium: TextStyle(
-        fontFamily: fontFamily,
-        color: lightTextPrimaryColor,
-        fontWeight: FontWeight.w600,
-      ),
-      headlineSmall: TextStyle(
-        fontFamily: fontFamily,
-        color: lightTextPrimaryColor,
-        fontWeight: FontWeight.w600,
-      ),
-      titleLarge: TextStyle(
-        fontFamily: fontFamily,
-        color: lightTextPrimaryColor,
-        fontWeight: FontWeight.w600,
-      ),
-      titleMedium: TextStyle(
-        fontFamily: fontFamily,
-        color: lightTextPrimaryColor,
-        fontWeight: FontWeight.w500,
-      ),
-      titleSmall: TextStyle(
-        fontFamily: fontFamily,
-        color: lightTextPrimaryColor,
-        fontWeight: FontWeight.w500,
-      ),
-      bodyLarge: TextStyle(
-        fontFamily: fontFamily,
-        color: lightTextPrimaryColor,
-      ),
-      bodyMedium: TextStyle(
-        fontFamily: fontFamily,
-        color: lightTextPrimaryColor,
-      ),
-      bodySmall: TextStyle(
-        fontFamily: fontFamily,
-        color: lightTextSecondaryColor,
-      ),
-      labelLarge: TextStyle(
-        fontFamily: fontFamily,
-        color: primaryColor,
-        fontWeight: FontWeight.w500,
-      ),
-    ),
+    textTheme: GoogleFonts.poppinsTextTheme(),
     dividerTheme: DividerThemeData(
       color: lightDividerColor,
       thickness: 1,
@@ -148,7 +87,7 @@ class AppTheme {
     inputDecorationTheme: InputDecorationTheme(
       filled: true,
       fillColor: Colors.white,
-      contentPadding: const EdgeInsets.all(defaultPadding),
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       border: OutlineInputBorder(
         borderRadius: BorderRadius.circular(defaultBorderRadius),
         borderSide: BorderSide(color: lightDividerColor),
@@ -174,10 +113,7 @@ class AppTheme {
       style: ElevatedButton.styleFrom(
         foregroundColor: Colors.white,
         backgroundColor: primaryColor,
-        padding: const EdgeInsets.symmetric(
-          horizontal: defaultPadding,
-          vertical: defaultPadding,
-        ),
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(defaultBorderRadius),
         ),
@@ -219,41 +155,41 @@ class AppTheme {
       ),
     ),
     checkboxTheme: CheckboxThemeData(
-      fillColor: MaterialStateProperty.resolveWith<Color>(
-            (Set<MaterialState> states) {
-          if (states.contains(MaterialState.disabled)) {
-            return lightDividerColor;
-          }
-          return primaryColor;
-        },
-      ),
+      fillColor: MaterialStateProperty.resolveWith<Color>((
+        Set<MaterialState> states,
+      ) {
+        if (states.contains(MaterialState.disabled)) {
+          return lightDividerColor;
+        }
+        return primaryColor;
+      }),
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(smallBorderRadius),
       ),
     ),
     switchTheme: SwitchThemeData(
-      thumbColor: MaterialStateProperty.resolveWith<Color>(
-            (Set<MaterialState> states) {
-          if (states.contains(MaterialState.disabled)) {
-            return lightDividerColor;
-          }
-          if (states.contains(MaterialState.selected)) {
-            return primaryColor;
-          }
-          return Colors.white;
-        },
-      ),
-      trackColor: MaterialStateProperty.resolveWith<Color>(
-            (Set<MaterialState> states) {
-          if (states.contains(MaterialState.disabled)) {
-            return lightDividerColor.withOpacity(0.5);
-          }
-          if (states.contains(MaterialState.selected)) {
-            return primaryColor.withOpacity(0.5);
-          }
+      thumbColor: MaterialStateProperty.resolveWith<Color>((
+        Set<MaterialState> states,
+      ) {
+        if (states.contains(MaterialState.disabled)) {
           return lightDividerColor;
-        },
-      ),
+        }
+        if (states.contains(MaterialState.selected)) {
+          return primaryColor;
+        }
+        return Colors.white;
+      }),
+      trackColor: MaterialStateProperty.resolveWith<Color>((
+        Set<MaterialState> states,
+      ) {
+        if (states.contains(MaterialState.disabled)) {
+          return lightDividerColor.withOpacity(0.5);
+        }
+        if (states.contains(MaterialState.selected)) {
+          return primaryColor.withOpacity(0.5);
+        }
+        return lightDividerColor;
+      }),
     ),
     tabBarTheme: TabBarTheme(
       labelColor: primaryColor,
@@ -263,9 +199,7 @@ class AppTheme {
         fontFamily: fontFamily,
         fontWeight: FontWeight.w600,
       ),
-      unselectedLabelStyle: TextStyle(
-        fontFamily: fontFamily,
-      ),
+      unselectedLabelStyle: TextStyle(fontFamily: fontFamily),
     ),
     chipTheme: ChipThemeData(
       backgroundColor: lightCardColor,
@@ -332,9 +266,7 @@ class AppTheme {
         fontFamily: fontFamily,
         fontWeight: FontWeight.w500,
       ),
-      unselectedLabelStyle: TextStyle(
-        fontFamily: fontFamily,
-      ),
+      unselectedLabelStyle: TextStyle(fontFamily: fontFamily),
       type: BottomNavigationBarType.fixed,
       elevation: 8,
     ),
@@ -346,213 +278,148 @@ class AppTheme {
   );
 
   static final ThemeData darkTheme = ThemeData(
-  useMaterial3: true,
-  colorScheme: ColorScheme.dark(
-  primary: primaryColor,
-  secondary: secondaryColor,
-  error: errorColor,
-  background: darkBackgroundColor,
-  surface: darkCardColor,
-  onPrimary: Colors.white,
-  onSecondary: Colors.white,
-  onBackground: darkTextPrimaryColor,
-  onSurface: darkTextPrimaryColor,
-  onError: Colors.white,
-  ),
-  scaffoldBackgroundColor: darkBackgroundColor,
-  cardTheme: CardTheme(
-  color: darkCardColor,
-  elevation: 4,
-  shape: RoundedRectangleBorder(
-  borderRadius: BorderRadius.circular(cardBorderRadius),
-  ),
-  ),
-  appBarTheme: AppBarTheme(
-  backgroundColor: darkCardColor,
-  foregroundColor: darkTextPrimaryColor,
-  elevation: 0,
-  centerTitle: false,
-  titleTextStyle: TextStyle(
-  fontFamily: fontFamily,
-  fontWeight: FontWeight.bold,
-  fontSize: 20,
-  color: darkTextPrimaryColor,
-  ),
-  ),
-  textTheme: TextTheme(
-  displayLarge: TextStyle(
-  fontFamily: fontFamily,
-  color: darkTextPrimaryColor,
-  fontWeight: FontWeight.bold,
-  ),
-  displayMedium: TextStyle(
-  fontFamily: fontFamily,
-  color: darkTextPrimaryColor,
-  fontWeight: FontWeight.bold,
-  ),
-  displaySmall: TextStyle(
-  fontFamily: fontFamily,
-  color: darkTextPrimaryColor,
-  fontWeight: FontWeight.bold,
-  ),
-  headlineMedium: TextStyle(
-  fontFamily: fontFamily,
-  color: darkTextPrimaryColor,
-  fontWeight: FontWeight.w600,
-  ),
-  headlineSmall: TextStyle(
-  fontFamily: fontFamily,
-  color: darkTextPrimaryColor,
-  fontWeight: FontWeight.w600,
-  ),
-  titleLarge: TextStyle(
-  fontFamily: fontFamily,
-  color: darkTextPrimaryColor,
-  fontWeight: FontWeight.w600,
-  ),
-  titleMedium: TextStyle(
-  fontFamily: fontFamily,
-  color: darkTextPrimaryColor,
-  fontWeight: FontWeight.w500,
-  ),
-  titleSmall: TextStyle(
-  fontFamily: fontFamily,
-  color: darkTextPrimaryColor,
-  fontWeight: FontWeight.w500,
-  ),
-  bodyLarge: TextStyle(
-  fontFamily: fontFamily,
-  color: darkTextPrimaryColor,
-  ),
-  bodyMedium: TextStyle(
-  fontFamily: fontFamily,
-  color: darkTextPrimaryColor,
-  ),
-  bodySmall: TextStyle(
-  fontFamily: fontFamily,
-  color: darkTextSecondaryColor,
-  ),
-  labelLarge: TextStyle(
-  fontFamily: fontFamily,
-  color: primaryColor,
-  fontWeight: FontWeight.w500,
-  ),
-  ),
-  dividerTheme: DividerThemeData(
-  color: darkDividerColor,
-  thickness: 1,
-  space: 1,
-  ),
-  inputDecorationTheme: InputDecorationTheme(
-  filled: true,
-  fillColor: darkCardColor,
-  contentPadding: const EdgeInsets.all(defaultPadding),
-  border: OutlineInputBorder(
-  borderRadius: BorderRadius.circular(defaultBorderRadius),
-  borderSide: BorderSide(color: darkDividerColor),
-  ),
-  enabledBorder: OutlineInputBorder(
-  borderRadius: BorderRadius.circular(defaultBorderRadius),
-  borderSide: BorderSide(color: darkDividerColor),
-  ),
-  focusedBorder: OutlineInputBorder(
-  borderRadius: BorderRadius.circular(defaultBorderRadius),
-  borderSide: BorderSide(color: primaryColor, width: 2),
-  ),
-  errorBorder: OutlineInputBorder(
-  borderRadius: BorderRadius.circular(defaultBorderRadius),
-  borderSide: BorderSide(color: errorColor, width: 1),
-  ),
-  focusedErrorBorder: OutlineInputBorder(
-  borderRadius: BorderRadius.circular(defaultBorderRadius),
-  borderSide: BorderSide(color: errorColor, width: 2),
-  ),
-  ),
-  elevatedButtonTheme: ElevatedButtonThemeData(
-  style: ElevatedButton.styleFrom(
-  foregroundColor: Colors.white,
-  backgroundColor: primaryColor,
-  padding: const EdgeInsets.symmetric(
-  horizontal: defaultPadding,
-  vertical: defaultPadding,
-  ),
-  shape: RoundedRectangleBorder(
-  borderRadius: BorderRadius.circular(defaultBorderRadius),
-  ),
-  textStyle: TextStyle(
-  fontFamily: fontFamily,
-  fontWeight: FontWeight.w600,
-  ),
-  elevation: 0,
-  ),
-  ),
-  outlinedButtonTheme: OutlinedButtonThemeData(
-  style: OutlinedButton.styleFrom(
-  foregroundColor: primaryColor,
-  side: BorderSide(color: primaryColor),
-  padding: const EdgeInsets.symmetric(
-  horizontal: defaultPadding,
-  vertical: defaultPadding,
-  ),
-  shape: RoundedRectangleBorder(
-  borderRadius: BorderRadius.circular(defaultBorderRadius),
-  ),
-  textStyle: TextStyle(
-  fontFamily: fontFamily,
-  fontWeight: FontWeight.w600,
-  ),
-  ),
-  ),
-  textButtonTheme: TextButtonThemeData(
-  style: TextButton.styleFrom(
-  foregroundColor: primaryColor,
-  padding: const EdgeInsets.symmetric(
-  horizontal: defaultPadding,
-  vertical: smallPadding,
-  ),
-  textStyle: TextStyle(
-  fontFamily: fontFamily,
-  fontWeight: FontWeight.w600,
-  ),
-  ),
-  ),
-  checkboxTheme: CheckboxThemeData(
-  fillColor: MaterialStateProperty.resolveWith<Color>(
-  (Set<MaterialState> states) {
-  if (states.contains(MaterialState.disabled)) {
-  return darkDividerColor;
-  }
-  return primaryColor;
-  },
-  ),
-  shape: RoundedRectangleBorder(
-  borderRadius: BorderRadius.circular(smallBorderRadius),
-  ),
-  ),
-  switchTheme: SwitchThemeData(
-  thumbColor: MaterialStateProperty.resolveWith<Color>(
-  (Set<MaterialState> states) {
-  if (states.contains(MaterialState.disabled)) {
-  return darkDividerColor;
-  }
-  if (states.contains(MaterialState.selected)) {
-  return primaryColor;
-  }
-  return darkTextPrimaryColor;
-  },
-  ),
-  trackColor: MaterialStateProperty.resolveWith<Color>(
-  (Set<MaterialState> states) {
-  if (states.contains(MaterialState.disabled)) {
-  return darkDividerColor.withOpacity(0.5);
-  }
-  if (states.contains(MaterialState.selected)) {
-    return primaryColor.withOpacity(0.5);
-  }
-  return darkDividerColor;
-  },
-  ),
-  ),
+    useMaterial3: true,
+    colorScheme: ColorScheme.dark(
+      primary: primaryColor,
+      secondary: secondaryColor,
+      tertiary: accentColor,
+      background: darkBackgroundColor,
+      surface: darkCardColor,
+      error: errorColor,
+    ),
+    scaffoldBackgroundColor: darkBackgroundColor,
+    cardTheme: CardTheme(
+      color: darkCardColor,
+      elevation: 2,
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(cardBorderRadius),
+      ),
+    ),
+    appBarTheme: AppBarTheme(
+      backgroundColor: darkCardColor,
+      foregroundColor: darkTextPrimaryColor,
+      elevation: 0,
+      centerTitle: true,
+      titleTextStyle: TextStyle(
+        fontFamily: fontFamily,
+        fontWeight: FontWeight.bold,
+        fontSize: 20,
+        color: darkTextPrimaryColor,
+      ),
+    ),
+    textTheme: GoogleFonts.poppinsTextTheme(ThemeData.dark().textTheme),
+    dividerTheme: DividerThemeData(
+      color: darkDividerColor,
+      thickness: 1,
+      space: 1,
+    ),
+    inputDecorationTheme: InputDecorationTheme(
+      filled: true,
+      fillColor: darkCardColor,
+      contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      border: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(defaultBorderRadius),
+        borderSide: BorderSide(color: darkDividerColor),
+      ),
+      enabledBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(defaultBorderRadius),
+        borderSide: BorderSide(color: darkDividerColor),
+      ),
+      focusedBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(defaultBorderRadius),
+        borderSide: BorderSide(color: primaryColor, width: 2),
+      ),
+      errorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(defaultBorderRadius),
+        borderSide: BorderSide(color: errorColor, width: 1),
+      ),
+      focusedErrorBorder: OutlineInputBorder(
+        borderRadius: BorderRadius.circular(defaultBorderRadius),
+        borderSide: BorderSide(color: errorColor, width: 2),
+      ),
+    ),
+    elevatedButtonTheme: ElevatedButtonThemeData(
+      style: ElevatedButton.styleFrom(
+        foregroundColor: Colors.white,
+        backgroundColor: primaryColor,
+        padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 12),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadius),
+        ),
+        textStyle: TextStyle(
+          fontFamily: fontFamily,
+          fontWeight: FontWeight.w600,
+        ),
+        elevation: 0,
+      ),
+    ),
+    outlinedButtonTheme: OutlinedButtonThemeData(
+      style: OutlinedButton.styleFrom(
+        foregroundColor: primaryColor,
+        side: BorderSide(color: primaryColor),
+        padding: const EdgeInsets.symmetric(
+          horizontal: defaultPadding,
+          vertical: defaultPadding,
+        ),
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(defaultBorderRadius),
+        ),
+        textStyle: TextStyle(
+          fontFamily: fontFamily,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ),
+    textButtonTheme: TextButtonThemeData(
+      style: TextButton.styleFrom(
+        foregroundColor: primaryColor,
+        padding: const EdgeInsets.symmetric(
+          horizontal: defaultPadding,
+          vertical: smallPadding,
+        ),
+        textStyle: TextStyle(
+          fontFamily: fontFamily,
+          fontWeight: FontWeight.w600,
+        ),
+      ),
+    ),
+    checkboxTheme: CheckboxThemeData(
+      fillColor: MaterialStateProperty.resolveWith<Color>((
+        Set<MaterialState> states,
+      ) {
+        if (states.contains(MaterialState.disabled)) {
+          return darkDividerColor;
+        }
+        return primaryColor;
+      }),
+      shape: RoundedRectangleBorder(
+        borderRadius: BorderRadius.circular(smallBorderRadius),
+      ),
+    ),
+    switchTheme: SwitchThemeData(
+      thumbColor: MaterialStateProperty.resolveWith<Color>((
+        Set<MaterialState> states,
+      ) {
+        if (states.contains(MaterialState.disabled)) {
+          return darkDividerColor;
+        }
+        if (states.contains(MaterialState.selected)) {
+          return primaryColor;
+        }
+        return darkTextPrimaryColor;
+      }),
+      trackColor: MaterialStateProperty.resolveWith<Color>((
+        Set<MaterialState> states,
+      ) {
+        if (states.contains(MaterialState.disabled)) {
+          return darkDividerColor.withOpacity(0.5);
+        }
+        if (states.contains(MaterialState.selected)) {
+          return primaryColor.withOpacity(0.5);
+        }
+        return darkDividerColor;
+      }),
+    ),
     tabBarTheme: TabBarTheme(
       labelColor: primaryColor,
       unselectedLabelColor: darkTextSecondaryColor,
@@ -561,9 +428,7 @@ class AppTheme {
         fontFamily: fontFamily,
         fontWeight: FontWeight.w600,
       ),
-      unselectedLabelStyle: TextStyle(
-        fontFamily: fontFamily,
-      ),
+      unselectedLabelStyle: TextStyle(fontFamily: fontFamily),
     ),
     chipTheme: ChipThemeData(
       backgroundColor: darkCardColor,
@@ -630,9 +495,7 @@ class AppTheme {
         fontFamily: fontFamily,
         fontWeight: FontWeight.w500,
       ),
-      unselectedLabelStyle: TextStyle(
-        fontFamily: fontFamily,
-      ),
+      unselectedLabelStyle: TextStyle(fontFamily: fontFamily),
       type: BottomNavigationBarType.fixed,
       elevation: 8,
     ),

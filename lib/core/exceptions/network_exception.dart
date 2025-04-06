@@ -25,7 +25,6 @@ class NetworkExceptionHandler {
       case DioExceptionType.connectionTimeout:
         return TimeoutException(
           message: 'Connection timeout. Please check your internet connection.',
-          code: 'CONNECTION_TIMEOUT',
           details: error.message,
           stackTrace: error.stackTrace,
         );
@@ -33,7 +32,6 @@ class NetworkExceptionHandler {
       case DioExceptionType.sendTimeout:
         return TimeoutException(
           message: 'Request timeout. Please try again later.',
-          code: 'SEND_TIMEOUT',
           details: error.message,
           stackTrace: error.stackTrace,
         );
@@ -41,7 +39,6 @@ class NetworkExceptionHandler {
       case DioExceptionType.receiveTimeout:
         return TimeoutException(
           message: 'Server response timeout. Please try again later.',
-          code: 'RECEIVE_TIMEOUT',
           details: error.message,
           stackTrace: error.stackTrace,
         );
@@ -49,16 +46,13 @@ class NetworkExceptionHandler {
       case DioExceptionType.badCertificate:
         return NetworkException(
           message: 'Invalid SSL certificate. Please try again later.',
-          code: 'BAD_CERTIFICATE',
           details: error.message,
-          statusCode: error.response?.statusCode,
           stackTrace: error.stackTrace,
         );
 
       case DioExceptionType.connectionError:
         return NetworkException(
           message: 'Connection error. Please check your internet connection.',
-          code: 'CONNECTION_ERROR',
           details: error.message,
           stackTrace: error.stackTrace,
         );
@@ -69,7 +63,6 @@ class NetworkExceptionHandler {
       case DioExceptionType.cancel:
         return NetworkException(
           message: 'Request was cancelled',
-          code: 'REQUEST_CANCELLED',
           details: error.message,
           stackTrace: error.stackTrace,
         );
@@ -78,9 +71,7 @@ class NetworkExceptionHandler {
       default:
         return NetworkException(
           message: 'Network error occurred',
-          code: 'UNKNOWN_NETWORK_ERROR',
           details: error.message,
-          statusCode: error.response?.statusCode,
           stackTrace: error.stackTrace,
         );
     }
@@ -107,7 +98,6 @@ class NetworkExceptionHandler {
       case 400:
         return ValidationException(
           message: message,
-          code: 'BAD_REQUEST',
           details: data,
           stackTrace: error.stackTrace,
         );
@@ -115,7 +105,6 @@ class NetworkExceptionHandler {
       case 401:
         return AuthException(
           message: 'Unauthorized. Please login again.',
-          code: 'UNAUTHORIZED',
           details: data,
           stackTrace: error.stackTrace,
         );
@@ -123,7 +112,6 @@ class NetworkExceptionHandler {
       case 403:
         return PermissionException(
           message: 'You do not have permission to access this resource',
-          code: 'FORBIDDEN',
           details: data,
           stackTrace: error.stackTrace,
         );
@@ -131,16 +119,13 @@ class NetworkExceptionHandler {
       case 404:
         return NetworkException(
           message: 'The requested resource was not found',
-          code: 'NOT_FOUND',
           details: data,
-          statusCode: statusCode,
           stackTrace: error.stackTrace,
         );
 
       case 409:
         return BusinessException(
           message: 'Conflict occurred with the current state of the resource',
-          code: 'CONFLICT',
           details: data,
           stackTrace: error.stackTrace,
         );
@@ -148,18 +133,14 @@ class NetworkExceptionHandler {
       case 422:
         return ValidationException(
           message: 'Validation failed',
-          code: 'UNPROCESSABLE_ENTITY',
           details: data,
-          fieldErrors: _extractFieldErrors(data),
           stackTrace: error.stackTrace,
         );
 
       case 429:
         return NetworkException(
           message: 'Too many requests. Please try again later.',
-          code: 'TOO_MANY_REQUESTS',
           details: data,
-          statusCode: statusCode,
           stackTrace: error.stackTrace,
         );
 
@@ -170,18 +151,14 @@ class NetworkExceptionHandler {
       case 504:
         return NetworkException(
           message: 'Server error. Please try again later.',
-          code: 'SERVER_ERROR',
           details: data,
-          statusCode: statusCode,
           stackTrace: error.stackTrace,
         );
 
       default:
         return NetworkException(
           message: message,
-          code: 'HTTP_ERROR',
           details: data,
-          statusCode: statusCode,
           stackTrace: error.stackTrace,
         );
     }
