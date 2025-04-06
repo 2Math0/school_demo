@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 import 'base_model.dart';
 
 class Notification extends BaseModel {
@@ -10,20 +9,16 @@ class Notification extends BaseModel {
   final bool read;
 
   const Notification({
-    required String id,
+    required super.id,
     required this.userId,
     required this.type,
     required this.title,
     required this.message,
     required this.data,
     this.read = false,
-    required DateTime createdAt,
-    required DateTime updatedAt,
-  }) : super(
-          id: id,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+    required super.createdAt,
+    required super.updatedAt,
+  });
 
   factory Notification.fromJson(Map<String, dynamic> json) {
     return Notification(

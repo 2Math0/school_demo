@@ -18,7 +18,7 @@ class Course extends BaseModel {
   final List<Section> sections;
 
   const Course({
-    required String id,
+    required super.id,
     required this.title,
     required this.description,
     required this.instructor,
@@ -32,13 +32,9 @@ class Course extends BaseModel {
     required this.requirements,
     required this.whatYouWillLearn,
     required this.sections,
-    required DateTime createdAt,
-    required DateTime updatedAt,
-  }) : super(
-          id: id,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+    required super.createdAt,
+    required super.updatedAt,
+  });
 
   factory Course.fromJson(Map<String, dynamic> json) {
     return Course(

@@ -19,7 +19,7 @@ class _ChatScreenState extends State<ChatScreen> {
   final _messageController = TextEditingController();
   final _scrollController = ScrollController();
   bool _isAttaching = false;
-  bool _isTyping = false;
+  final bool _isTyping = false;
 
   final List<Map<String, dynamic>> _messages = [
     {
@@ -140,7 +140,7 @@ class _ChatScreenState extends State<ChatScreen> {
       child: Container(
         padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 4),
         decoration: BoxDecoration(
-          color: Theme.of(context).colorScheme.surfaceVariant,
+          color: Theme.of(context).colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(12),
         ),
         child: Text(
@@ -164,7 +164,7 @@ class _ChatScreenState extends State<ChatScreen> {
         decoration: BoxDecoration(
           color: isUser
               ? Theme.of(context).colorScheme.primary
-              : Theme.of(context).colorScheme.surfaceVariant,
+              : Theme.of(context).colorScheme.surfaceContainerHighest,
           borderRadius: BorderRadius.circular(16).copyWith(
             bottomRight: isUser ? const Radius.circular(4) : null,
             bottomLeft: !isUser ? const Radius.circular(4) : null,
@@ -325,7 +325,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Theme.of(context).colorScheme.surfaceVariant,
+                fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 8,

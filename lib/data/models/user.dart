@@ -10,20 +10,16 @@ class User extends BaseModel {
   final List<EnrolledCourse>? enrolledCourses;
 
   const User({
-    required String id,
+    required super.id,
     required this.email,
     required this.fullName,
     this.avatar,
     this.bio,
     this.isInstructor = false,
     this.enrolledCourses,
-    required DateTime createdAt,
-    required DateTime updatedAt,
-  }) : super(
-          id: id,
-          createdAt: createdAt,
-          updatedAt: updatedAt,
-        );
+    required super.createdAt,
+    required super.updatedAt,
+  });
 
   factory User.fromJson(Map<String, dynamic> json) {
     return User(

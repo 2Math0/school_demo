@@ -195,9 +195,9 @@ class _SettingsScreenState extends State<SettingsScreen> {
       title: 'About',
       icon: Icons.info_outline,
       children: [
-        ListTile(
-          title: const Text('Version'),
-          subtitle: const Text('1.0.0'),
+        const ListTile(
+          title: Text('Version'),
+          subtitle: Text('1.0.0'),
         ),
         ListTile(
           title: const Text('Terms of Service'),

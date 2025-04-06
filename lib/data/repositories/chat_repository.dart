@@ -1,5 +1,4 @@
 import 'dart:io';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../core/services/supabase_service.dart';
 import '../../core/exceptions/app_exception.dart';
 import '../models/chat_message.dart';

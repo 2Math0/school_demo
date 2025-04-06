@@ -1,4 +1,3 @@
-import 'package:equatable/equatable.dart';
 
 // Base exception class for the application
 class AppException implements Exception {
@@ -28,129 +27,89 @@ class AppException implements Exception {
 // Authentication related exceptions
 class AuthException extends AppException {
   const AuthException({
-    required String message,
-    String? details,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          details: details,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.details,
+    super.stackTrace,
+  });
 }
 
 // Network related exceptions
 class NetworkException extends AppException {
   const NetworkException({
-    required String message,
-    String? details,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          details: details,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.details,
+    super.stackTrace,
+  });
 }
 
 // Database related exceptions
 class DatabaseException extends AppException {
   const DatabaseException({
-    required String message,
-    String? details,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          details: details,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.details,
+    super.stackTrace,
+  });
 }
 
 // Cache related exceptions
 class CacheException extends AppException {
   const CacheException({
-    required String message,
-    String? details,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          details: details,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.details,
+    super.stackTrace,
+  });
 }
 
 // File related exceptions
 class FileException extends AppException {
   const FileException({
-    required String message,
-    String? details,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          details: details,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.details,
+    super.stackTrace,
+  });
 }
 
 // Validation related exceptions
 class ValidationException extends AppException {
   const ValidationException({
-    required String message,
-    String? details,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          details: details,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.details,
+    super.stackTrace,
+  });
 }
 
 // Permission related exceptions
 class PermissionException extends AppException {
   const PermissionException({
-    required String message,
-    String? details,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          details: details,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.details,
+    super.stackTrace,
+  });
 }
 
 // Business logic related exceptions
 class BusinessException extends AppException {
   const BusinessException({
-    required String message,
-    String? details,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          details: details,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.details,
+    super.stackTrace,
+  });
 }
 
 // Timeout related exceptions
 class TimeoutException extends AppException {
   const TimeoutException({
-    required String message,
-    String? details,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          details: details,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.details,
+    super.stackTrace,
+  });
 }
 
 // Unknown/unexpected exceptions
 class UnknownException extends AppException {
   const UnknownException({
-    required String message,
-    String? details,
-    StackTrace? stackTrace,
-  }) : super(
-          message: message,
-          details: details,
-          stackTrace: stackTrace,
-        );
+    required super.message,
+    super.details,
+    super.stackTrace,
+  });
 }

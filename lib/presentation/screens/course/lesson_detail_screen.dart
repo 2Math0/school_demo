@@ -195,7 +195,7 @@ class _LessonDetailScreenState extends State<LessonDetailScreen> {
               return ListTile(
                 leading: const Icon(Icons.attachment),
                 title: Text('Resource ${index + 1}'),
-                subtitle: Text('PDF • 2.5 MB'),
+                subtitle: const Text('PDF • 2.5 MB'),
                 trailing: IconButton(
                   icon: const Icon(Icons.download_outlined),
                   onPressed: () {

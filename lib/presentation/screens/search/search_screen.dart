@@ -13,7 +13,7 @@ class _SearchScreenState extends State<SearchScreen> {
   String _selectedLevel = 'All Levels';
   String _selectedDuration = 'Any Duration';
   bool _isSearching = false;
-  List<String> _recentSearches = [
+  final List<String> _recentSearches = [
     'Flutter Development',
     'UI Design',
     'Mobile Apps',
@@ -76,7 +76,7 @@ class _SearchScreenState extends State<SearchScreen> {
           borderSide: BorderSide.none,
         ),
         filled: true,
-        fillColor: Theme.of(context).colorScheme.surfaceVariant,
+        fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
         prefixIcon: const Icon(Icons.search),
         suffixIcon: _searchController.text.isNotEmpty
             ? IconButton(
@@ -268,7 +268,7 @@ class _SearchScreenState extends State<SearchScreen> {
                           const SizedBox(height: 4),
                           Row(
                             children: [
-                              Icon(
+                              const Icon(
                                 Icons.star,
                                 size: 16,
                                 color: Colors.amber,
@@ -340,7 +340,7 @@ class _SearchScreenState extends State<SearchScreen> {
                         const SizedBox(height: 4),
                         Row(
                           children: [
-                            Icon(
+                            const Icon(
                               Icons.star,
                               size: 16,
                               color: Colors.amber,

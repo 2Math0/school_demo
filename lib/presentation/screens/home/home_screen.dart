@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
-import 'package:school_demo/core/theme/app_theme.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -284,7 +283,7 @@ class _HomeScreenState extends State<HomeScreen> {
             decoration: BoxDecoration(
               color: isMe
                   ? Theme.of(context).colorScheme.primaryContainer
-                  : Theme.of(context).colorScheme.surfaceVariant,
+                  : Theme.of(context).colorScheme.surfaceContainerHighest,
               borderRadius: BorderRadius.circular(16),
             ),
             child: Column(

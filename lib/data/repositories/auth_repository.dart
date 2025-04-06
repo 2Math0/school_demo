@@ -7,9 +7,8 @@ import 'base_repository.dart';
 class AuthRepository extends BaseRepository {
   final SupabaseService _supabaseService;
 
-  AuthRepository({required SupabaseService supabaseService})
-      : _supabaseService = supabaseService,
-        super(supabaseService: supabaseService);
+  AuthRepository({required super.supabaseService})
+      : _supabaseService = supabaseService;
 
   Future<models.User> signUp({
     required String email,

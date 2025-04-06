@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
-import 'package:school_demo/core/theme/app_theme.dart';
 
 class CourseDetailScreen extends StatefulWidget {
   final String courseId;

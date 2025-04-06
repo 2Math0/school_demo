@@ -9,12 +9,11 @@ class AppTheme {
 
   static final lightTheme = ThemeData(
     useMaterial3: true,
-    colorScheme: ColorScheme.light(
+    colorScheme: const ColorScheme.light(
       primary: _primaryColor,
       secondary: _secondaryColor,
       tertiary: _tertiaryColor,
       error: _errorColor,
-      background: Colors.grey[50]!,
       surface: Colors.white,
     ),
     textTheme: GoogleFonts.interTextTheme(),
@@ -80,7 +79,6 @@ class AppTheme {
       secondary: _secondaryColor,
       tertiary: _tertiaryColor,
       error: _errorColor,
-      background: Colors.grey[900]!,
       surface: Colors.grey[850]!,
     ),
     textTheme: GoogleFonts.interTextTheme(ThemeData.dark().textTheme),
