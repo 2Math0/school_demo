@@ -1,25 +1,46 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
-import '../../../data/repositories/auth_repository.dart';
-import '../../../data/models/user.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../../core/services/api_service.dart';
 
 part 'auth_state.dart';
 
 class AuthCubit extends Cubit<AuthState> {
-  final AuthRepository authRepository;
+  final ApiService _apiService;
 
-  AuthCubit({required this.authRepository}) : super(const AuthInitial()) {
-    checkAuth();
+  AuthCubit({required ApiService apiService})
+      : _apiService = apiService,
+        super(AuthInitial()) {
+    Supabase.instance.client.auth.onAuthStateChange.listen((event) {
+      if (event.session != null) {
+        emit(AuthAuthenticated(user: event.session!.user));
+      } else {
+        emit(AuthUnauthenticated());
+      }
+    });
   }
 
-  Future<void> checkAuth() async {
+  Future<void> signUp({
+    required String email,
+    required String password,
+    required Map<String, dynamic> userData,
+  }) async {
     try {
-      emit(const AuthLoading());
-      final user = await authRepository.getCurrentUser();
-      if (user != null) {
-        emit(AuthAuthenticated(user: user));
+      emit(AuthLoading());
+      final response = await _apiService.signUp(
+        email: email,
+        password: password,
+        userMetadata: userData,
+      );
+      if (response['session'] != null) {
+        final user = User.fromJson(response['user']);
+        if (user != null) {
+          emit(AuthAuthenticated(user: user));
+        } else {
+          emit(AuthUnauthenticated());
+        }
       } else {
-        emit(const AuthUnauthenticated());
+        emit(AuthUnauthenticated());
       }
     } catch (e) {
       emit(AuthError(message: e.toString()));
@@ -31,30 +52,17 @@ class AuthCubit extends Cubit<AuthState> {
     required String password,
   }) async {
     try {
-      emit(const AuthLoading());
-      final user = await authRepository.signIn(
+      emit(AuthLoading());
+      final response = await _apiService.signIn(
         email: email,
         password: password,
       );
-      emit(AuthAuthenticated(user: user));
-    } catch (e) {
-      emit(AuthError(message: e.toString()));
-    }
-  }
-
-  Future<void> signUp({
-    required String email,
-    required String password,
-    required String fullName,
-  }) async {
-    try {
-      emit(const AuthLoading());
-      final user = await authRepository.signUp(
-        email: email,
-        password: password,
-        fullName: fullName,
-      );
-      emit(AuthAuthenticated(user: user));
+      final user = User.fromJson(response['user']);
+      if (user != null) {
+        emit(AuthAuthenticated(user: user));
+      } else {
+        emit(AuthUnauthenticated());
+      }
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }
@@ -62,9 +70,9 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> signOut() async {
     try {
-      emit(const AuthLoading());
-      await authRepository.signOut();
-      emit(const AuthUnauthenticated());
+      emit(AuthLoading());
+      await _apiService.signOut();
+      emit(AuthUnauthenticated());
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }
@@ -72,9 +80,9 @@ class AuthCubit extends Cubit<AuthState> {
 
   Future<void> resetPassword(String email) async {
     try {
-      emit(const AuthLoading());
-      await authRepository.resetPassword(email);
-      emit(const AuthUnauthenticated());
+      emit(AuthLoading());
+      await _apiService.resetPassword(email);
+      emit(AuthUnauthenticated());
     } catch (e) {
       emit(AuthError(message: e.toString()));
     }

@@ -1,24 +1,18 @@
-import '../../core/services/supabase_service.dart';
+import '../../core/services/api_service.dart';
 import '../../core/exceptions/app_exception.dart';
 import '../models/progress.dart';
 
 class ProgressRepository {
-  final SupabaseService supabaseService;
+  final ApiService apiService;
 
-  const ProgressRepository({required this.supabaseService});
+  const ProgressRepository({required this.apiService});
 
   Future<Progress> getProgress({
     required String userId,
     required String courseId,
   }) async {
     try {
-      final response = await supabaseService.client
-          .from('progress')
-          .select()
-          .eq('user_id', userId)
-          .eq('course_id', courseId)
-          .single();
-
+      final response = await apiService.getCourseProgress(courseId);
       return Progress.fromJson(response);
     } catch (e) {
       throw AppException(
@@ -30,12 +24,8 @@ class ProgressRepository {
 
   Future<List<Progress>> getAllProgress(String userId) async {
     try {
-      final response = await supabaseService.client
-          .from('progress')
-          .select()
-          .eq('user_id', userId);
-
-      return response.map((json) => Progress.fromJson(json)).toList();
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('getAllProgress is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to fetch all progress',
@@ -54,21 +44,14 @@ class ProgressRepository {
   }) async {
     try {
       final data = {
-        'user_id': userId,
-        'course_id': courseId,
         'completed_lessons': completedLessons,
         'total_lessons': totalLessons,
         'progress': progress,
         'current_lesson': currentLesson,
-        'last_accessed': DateTime.now().toIso8601String(),
       };
 
-      final response = await supabaseService.client
-          .from('progress')
-          .upsert(data)
-          .select()
-          .single();
-
+      await apiService.updateCourseProgress(courseId, data);
+      final response = await apiService.getCourseProgress(courseId);
       return Progress.fromJson(response);
     } catch (e) {
       throw AppException(
@@ -83,11 +66,8 @@ class ProgressRepository {
     required String courseId,
   }) async {
     try {
-      await supabaseService.client
-          .from('progress')
-          .delete()
-          .eq('user_id', userId)
-          .eq('course_id', courseId);
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('deleteProgress is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to delete progress',
@@ -98,15 +78,8 @@ class ProgressRepository {
 
   Future<double> calculateOverallProgress(String userId) async {
     try {
-      final allProgress = await getAllProgress(userId);
-      if (allProgress.isEmpty) return 0.0;
-
-      double totalProgress = 0.0;
-      for (var progress in allProgress) {
-        totalProgress += progress.progress;
-      }
-
-      return totalProgress / allProgress.length;
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('calculateOverallProgress is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to calculate overall progress',
@@ -117,32 +90,8 @@ class ProgressRepository {
 
   Future<Map<String, dynamic>> getProgressStats(String userId) async {
     try {
-      final allProgress = await getAllProgress(userId);
-
-      int totalCompletedLessons = 0;
-      int totalLessons = 0;
-      double totalScore = 0.0;
-      int completedCourses = 0;
-
-      for (var progress in allProgress) {
-        totalCompletedLessons += progress.completedLessons.length;
-        totalLessons += progress.totalLessons;
-        totalScore += progress.progress;
-
-        if (progress.completedLessons.length == progress.totalLessons) {
-          completedCourses++;
-        }
-      }
-
-      return {
-        'total_completed_lessons': totalCompletedLessons,
-        'total_lessons': totalLessons,
-        'average_score':
-            allProgress.isEmpty ? 0.0 : totalScore / allProgress.length,
-        'completed_courses': completedCourses,
-        'in_progress_courses': allProgress.length - completedCourses,
-        'overall_progress': await calculateOverallProgress(userId),
-      };
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('getProgressStats is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to get progress statistics',

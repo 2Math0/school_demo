@@ -1,32 +1,31 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import '../../cubit/auth/auth_cubit.dart';
-import '../../widgets/common/custom_text_field.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class ForgotPasswordScreen extends StatefulWidget {
+  const ForgotPasswordScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<ForgotPasswordScreen> createState() => _ForgotPasswordScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _ForgotPasswordScreenState extends State<ForgotPasswordScreen> {
   final _formKey = GlobalKey<FormState>();
   final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
-  bool _isPasswordVisible = false;
+  bool _isEmailSent = false;
 
   @override
   void dispose() {
     _emailController.dispose();
-    _passwordController.dispose();
     super.dispose();
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: AppBar(
+        title: const Text('Forgot Password'),
+      ),
       body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
@@ -37,22 +36,57 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
+                  Icon(
+                    Icons.lock_reset,
+                    size: 64,
+                    color: Theme.of(context).colorScheme.primary,
+                  ),
+                  const SizedBox(height: 16),
                   Text(
-                    'Welcome Back',
+                    'Reset Password',
                     style: Theme.of(context).textTheme.headlineMedium,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Sign in to continue learning',
+                    'Enter your email address and we\'ll send you a link to reset your password',
                     style: Theme.of(context).textTheme.bodyLarge,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
-                  CustomTextField(
+                  if (_isEmailSent) ...[
+                    Container(
+                      padding: const EdgeInsets.all(16),
+                      decoration: BoxDecoration(
+                        color: Colors.green.withAlpha(25),
+                        borderRadius: BorderRadius.circular(8),
+                      ),
+                      child: Row(
+                        children: [
+                          const Icon(
+                            Icons.check_circle,
+                            color: Colors.green,
+                            size: 24,
+                          ),
+                          const SizedBox(width: 16),
+                          Expanded(
+                            child: Text(
+                              'Password reset link has been sent to your email',
+                              style: Theme.of(context).textTheme.bodyMedium,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                    const SizedBox(height: 32),
+                  ],
+                  TextFormField(
                     controller: _emailController,
-                    labelText: 'Email',
                     keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      labelText: 'Email',
+                      prefixIcon: Icon(Icons.email),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
@@ -62,33 +96,6 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                       return null;
                     },
-                  ),
-                  const SizedBox(height: 16),
-                  CustomTextField(
-                    controller: _passwordController,
-                    labelText: 'Password',
-                    obscureText: !_isPasswordVisible,
-                    validator: (value) {
-                      if (value == null || value.isEmpty) {
-                        return 'Please enter your password';
-                      }
-                      if (value.length < 6) {
-                        return 'Password must be at least 6 characters';
-                      }
-                      return null;
-                    },
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isPasswordVisible
-                            ? Icons.visibility_off
-                            : Icons.visibility,
-                      ),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
-                    ),
                   ),
                   const SizedBox(height: 24),
                   BlocConsumer<AuthCubit, AuthState>(
@@ -100,8 +107,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             backgroundColor: Colors.red,
                           ),
                         );
-                      } else if (state is AuthAuthenticated) {
-                        context.go('/');
                       }
                     },
                     builder: (context, state) {
@@ -110,40 +115,26 @@ class _LoginScreenState extends State<LoginScreen> {
                             ? null
                             : () {
                                 if (_formKey.currentState!.validate()) {
-                                  context.read<AuthCubit>().signIn(
-                                        email: _emailController.text,
-                                        password: _passwordController.text,
-                                      );
+                                  context
+                                      .read<AuthCubit>()
+                                      .resetPassword(_emailController.text);
+                                  setState(() {
+                                    _isEmailSent = true;
+                                  });
                                 }
                               },
                         child: state is AuthLoading
                             ? const CircularProgressIndicator()
-                            : const Text('Sign In'),
+                            : const Text('Send Reset Link'),
                       );
                     },
                   ),
                   const SizedBox(height: 16),
                   TextButton(
                     onPressed: () {
-                      // TODO: Navigate to forgot password screen
+                      // TODO: Navigate to login screen
                     },
-                    child: const Text('Forgot Password?'),
-                  ),
-                  const SizedBox(height: 16),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      Text(
-                        "Don't have an account?",
-                        style: Theme.of(context).textTheme.bodyMedium,
-                      ),
-                      TextButton(
-                        onPressed: () {
-                          // TODO: Navigate to register screen
-                        },
-                        child: const Text('Sign Up'),
-                      ),
-                    ],
+                    child: const Text('Back to Sign In'),
                   ),
                 ],
               ),

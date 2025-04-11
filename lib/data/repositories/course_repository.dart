@@ -1,62 +1,51 @@
-import '../../core/services/supabase_service.dart';
 import '../../core/exceptions/app_exception.dart';
 import '../models/course.dart';
-import 'base_repository.dart';
+import '../datasources/course_datasource.dart';
 
-class CourseRepository extends BaseRepository {
-  final SupabaseService _supabaseService;
+class CourseRepository {
+  final CourseDataSource _dataSource;
 
-  CourseRepository({required super.supabaseService})
-      : _supabaseService = supabaseService;
+  CourseRepository({required CourseDataSource dataSource})
+      : _dataSource = dataSource;
 
-  Future<List<Course>> getCourses({
-    String? category,
-    String? level,
-    String? searchQuery,
-  }) async {
+  Future<List<Course>> getCourses() async {
     try {
-      var query = _supabaseService.client.from('courses').select();
-
-      if (category != null) {
-        query = query.eq('category', category);
-      }
-
-      if (level != null) {
-        query = query.eq('level', level);
-      }
-
-      if (searchQuery != null) {
-        query = query.ilike('title', '%$searchQuery%');
-      }
-
-      final response = await query;
-      return response.map((course) => Course.fromJson(course)).toList();
+      final courses = await _dataSource.getCourses();
+      return courses.map((course) => Course.fromJson(course)).toList();
     } catch (e) {
-      throw Exception('Failed to get courses: $e');
+      throw Exception('Failed to load courses: $e');
     }
   }
 
-  Future<Course> getCourseDetails(String courseId) async {
+  Future<List<Course>> searchCourses(String query) async {
     try {
-      final response = await _supabaseService.client
-          .from('courses')
-          .select('*, instructor:profiles(*)')
-          .eq('id', courseId)
-          .single();
-
-      return Course.fromJson(response);
+      final courses = await _dataSource.searchCourses(query);
+      return courses.map((course) => Course.fromJson(course)).toList();
     } catch (e) {
-      throw Exception('Failed to get course details: $e');
+      throw Exception('Failed to search courses: $e');
+    }
+  }
+
+  Future<Course> getCourseById(String courseId) async {
+    try {
+      final course = await _dataSource.getCourseById(courseId);
+      return Course.fromJson(course);
+    } catch (e) {
+      throw Exception('Failed to load course details: $e');
+    }
+  }
+
+  Future<void> enrollInCourse(String userId, String courseId) async {
+    try {
+      await _dataSource.enrollInCourse(userId, courseId);
+    } catch (e) {
+      throw Exception('Failed to enroll in course: $e');
     }
   }
 
   Future<List<Course>> getEnrolledCourses(String userId) async {
     try {
-      final response = await _supabaseService.client
-          .from('enrollments')
-          .select('course:courses(*)')
-          .eq('user_id', userId);
-
+      final response = await _dataSource.getEnrolledCourses(userId);
       return response.map((json) => Course.fromJson(json['course'])).toList();
     } catch (e) {
       throw AppException(
@@ -68,12 +57,7 @@ class CourseRepository extends BaseRepository {
 
   Future<Course> createCourse(Course course) async {
     try {
-      final response = await _supabaseService.client
-          .from('courses')
-          .insert(course.toJson())
-          .select()
-          .single();
-
+      final response = await _dataSource.createCourse(course);
       return Course.fromJson(response);
     } catch (e) {
       throw AppException(
@@ -85,13 +69,7 @@ class CourseRepository extends BaseRepository {
 
   Future<Course> updateCourse(Course course) async {
     try {
-      final response = await _supabaseService.client
-          .from('courses')
-          .update(course.toJson())
-          .eq('id', course.id)
-          .select()
-          .single();
-
+      final response = await _dataSource.updateCourse(course);
       return Course.fromJson(response);
     } catch (e) {
       throw AppException(
@@ -103,28 +81,10 @@ class CourseRepository extends BaseRepository {
 
   Future<void> deleteCourse(String id) async {
     try {
-      await supabaseService.client.from('courses').delete().eq('id', id);
+      await _dataSource.deleteCourse(id);
     } catch (e) {
       throw AppException(
         message: 'Failed to delete course',
-        details: e.toString(),
-      );
-    }
-  }
-
-  Future<void> enrollInCourse({
-    required String userId,
-    required String courseId,
-  }) async {
-    try {
-      await supabaseService.client.from('enrollments').insert({
-        'user_id': userId,
-        'course_id': courseId,
-        'enrolled_at': DateTime.now().toIso8601String(),
-      });
-    } catch (e) {
-      throw AppException(
-        message: 'Failed to enroll in course',
         details: e.toString(),
       );
     }
@@ -135,11 +95,7 @@ class CourseRepository extends BaseRepository {
     required String courseId,
   }) async {
     try {
-      await supabaseService.client
-          .from('enrollments')
-          .delete()
-          .eq('user_id', userId)
-          .eq('course_id', courseId);
+      await _dataSource.unenrollFromCourse(userId, courseId);
     } catch (e) {
       throw AppException(
         message: 'Failed to unenroll from course',
@@ -153,13 +109,7 @@ class CourseRepository extends BaseRepository {
     required String courseId,
   }) async {
     try {
-      final response = await supabaseService.client
-          .from('enrollments')
-          .select()
-          .eq('user_id', userId)
-          .eq('course_id', courseId)
-          .single();
-
+      final response = await _dataSource.isEnrolled(userId, courseId);
       return response != null;
     } catch (e) {
       return false;

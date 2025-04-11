@@ -1,27 +1,19 @@
-import 'package:school_demo/core/services/supabase_service.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../models/user.dart' as app_user;
-import 'base_repository.dart';
+import '../../core/services/api_service.dart';
 
-class UserRepository extends BaseRepository {
-  final SupabaseService _supabaseService;
+class UserRepository {
+  final ApiService _apiService;
 
-  UserRepository({required super.supabaseService})
-      : _supabaseService = supabaseService;
+  UserRepository({required ApiService apiService}) : _apiService = apiService;
 
   Future<app_user.User> getUserProfile() async {
     try {
-      final userId = _supabaseService.client.auth.currentUser?.id;
+      final userId = Supabase.instance.client.auth.currentUser?.id;
       if (userId == null) {
         throw Exception('User not authenticated');
       }
-
-      final response = await _supabaseService.client
-          .from('profiles')
-          .select()
-          .eq('id', userId)
-          .single();
-      return app_user.User.fromJson(response);
+      return await _apiService.getUserProfile(userId);
     } catch (e) {
       throw Exception('Failed to get user profile: $e');
     }
@@ -33,7 +25,7 @@ class UserRepository extends BaseRepository {
     String? avatar,
   }) async {
     try {
-      final userId = _supabaseService.client.auth.currentUser?.id;
+      final userId = Supabase.instance.client.auth.currentUser?.id;
       if (userId == null) {
         throw Exception('User not authenticated');
       }
@@ -45,14 +37,7 @@ class UserRepository extends BaseRepository {
         'updated_at': DateTime.now().toIso8601String(),
       };
 
-      final response = await _supabaseService.client
-          .from('profiles')
-          .update(updates)
-          .eq('id', userId)
-          .select()
-          .single();
-
-      return app_user.User.fromJson(response);
+      return await _apiService.updateUserProfile(userId, updates);
     } catch (e) {
       throw Exception('Failed to update user profile: $e');
     }
@@ -63,7 +48,7 @@ class UserRepository extends BaseRepository {
     required String newPassword,
   }) async {
     try {
-      await _supabaseService.client.auth.updateUser(
+      await Supabase.instance.client.auth.updateUser(
         UserAttributes(
           password: newPassword,
         ),

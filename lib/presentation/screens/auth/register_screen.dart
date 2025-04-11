@@ -1,26 +1,29 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:go_router/go_router.dart';
 import '../../cubit/auth/auth_cubit.dart';
-import '../../widgets/common/custom_text_field.dart';
 
-class LoginScreen extends StatefulWidget {
-  const LoginScreen({super.key});
+class RegisterScreen extends StatefulWidget {
+  const RegisterScreen({super.key});
 
   @override
-  State<LoginScreen> createState() => _LoginScreenState();
+  State<RegisterScreen> createState() => _RegisterScreenState();
 }
 
-class _LoginScreenState extends State<LoginScreen> {
+class _RegisterScreenState extends State<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _nameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
+  final _confirmPasswordController = TextEditingController();
   bool _isPasswordVisible = false;
+  bool _isConfirmPasswordVisible = false;
 
   @override
   void dispose() {
+    _nameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
+    _confirmPasswordController.dispose();
     super.dispose();
   }
 
@@ -38,21 +41,38 @@ class _LoginScreenState extends State<LoginScreen> {
                 crossAxisAlignment: CrossAxisAlignment.stretch,
                 children: [
                   Text(
-                    'Welcome Back',
+                    'Create Account',
                     style: Theme.of(context).textTheme.headlineMedium,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 8),
                   Text(
-                    'Sign in to continue learning',
+                    'Join us and start learning',
                     style: Theme.of(context).textTheme.bodyLarge,
                     textAlign: TextAlign.center,
                   ),
                   const SizedBox(height: 32),
-                  CustomTextField(
+                  TextFormField(
+                    controller: _nameController,
+                    decoration: const InputDecoration(
+                      labelText: 'Full Name',
+                      prefixIcon: Icon(Icons.person),
+                    ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please enter your name';
+                      }
+                      return null;
+                    },
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
                     controller: _emailController,
-                    labelText: 'Email',
                     keyboardType: TextInputType.emailAddress,
+                    decoration: const InputDecoration(
+                      labelText: 'Email',
+                      prefixIcon: Icon(Icons.email),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your email';
@@ -64,10 +84,25 @@ class _LoginScreenState extends State<LoginScreen> {
                     },
                   ),
                   const SizedBox(height: 16),
-                  CustomTextField(
+                  TextFormField(
                     controller: _passwordController,
-                    labelText: 'Password',
                     obscureText: !_isPasswordVisible,
+                    decoration: InputDecoration(
+                      labelText: 'Password',
+                      prefixIcon: const Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isPasswordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isPasswordVisible = !_isPasswordVisible;
+                          });
+                        },
+                      ),
+                    ),
                     validator: (value) {
                       if (value == null || value.isEmpty) {
                         return 'Please enter your password';
@@ -77,18 +112,37 @@ class _LoginScreenState extends State<LoginScreen> {
                       }
                       return null;
                     },
-                    suffixIcon: IconButton(
-                      icon: Icon(
-                        _isPasswordVisible
-                            ? Icons.visibility_off
-                            : Icons.visibility,
+                  ),
+                  const SizedBox(height: 16),
+                  TextFormField(
+                    controller: _confirmPasswordController,
+                    obscureText: !_isConfirmPasswordVisible,
+                    decoration: InputDecoration(
+                      labelText: 'Confirm Password',
+                      prefixIcon: const Icon(Icons.lock),
+                      suffixIcon: IconButton(
+                        icon: Icon(
+                          _isConfirmPasswordVisible
+                              ? Icons.visibility_off
+                              : Icons.visibility,
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            _isConfirmPasswordVisible =
+                                !_isConfirmPasswordVisible;
+                          });
+                        },
                       ),
-                      onPressed: () {
-                        setState(() {
-                          _isPasswordVisible = !_isPasswordVisible;
-                        });
-                      },
                     ),
+                    validator: (value) {
+                      if (value == null || value.isEmpty) {
+                        return 'Please confirm your password';
+                      }
+                      if (value != _passwordController.text) {
+                        return 'Passwords do not match';
+                      }
+                      return null;
+                    },
                   ),
                   const SizedBox(height: 24),
                   BlocConsumer<AuthCubit, AuthState>(
@@ -100,8 +154,6 @@ class _LoginScreenState extends State<LoginScreen> {
                             backgroundColor: Colors.red,
                           ),
                         );
-                      } else if (state is AuthAuthenticated) {
-                        context.go('/');
                       }
                     },
                     builder: (context, state) {
@@ -110,38 +162,34 @@ class _LoginScreenState extends State<LoginScreen> {
                             ? null
                             : () {
                                 if (_formKey.currentState!.validate()) {
-                                  context.read<AuthCubit>().signIn(
-                                        email: _emailController.text,
-                                        password: _passwordController.text,
-                                      );
+                                  context.read<AuthCubit>().signUp(
+                                    email: _emailController.text,
+                                    password: _passwordController.text,
+                                    userData: {
+                                      'name': _nameController.text,
+                                    },
+                                  );
                                 }
                               },
                         child: state is AuthLoading
                             ? const CircularProgressIndicator()
-                            : const Text('Sign In'),
+                            : const Text('Sign Up'),
                       );
                     },
-                  ),
-                  const SizedBox(height: 16),
-                  TextButton(
-                    onPressed: () {
-                      // TODO: Navigate to forgot password screen
-                    },
-                    child: const Text('Forgot Password?'),
                   ),
                   const SizedBox(height: 16),
                   Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
                       Text(
-                        "Don't have an account?",
+                        'Already have an account?',
                         style: Theme.of(context).textTheme.bodyMedium,
                       ),
                       TextButton(
                         onPressed: () {
-                          // TODO: Navigate to register screen
+                          // TODO: Navigate to login screen
                         },
-                        child: const Text('Sign Up'),
+                        child: const Text('Sign In'),
                       ),
                     ],
                   ),

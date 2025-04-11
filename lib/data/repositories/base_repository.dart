@@ -1,11 +1,14 @@
-import 'package:school_demo/core/services/supabase_service.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import '../../core/services/api_service.dart';
 
 abstract class BaseRepository {
-  final SupabaseService supabaseService;
+  final ApiService apiService;
+  final SupabaseClient supabaseClient;
 
-  BaseRepository({required this.supabaseService});
+  BaseRepository({required this.apiService})
+      : supabaseClient = Supabase.instance.client;
 
-  String get userId => supabaseService.client.auth.currentUser?.id ?? '';
+  String get userId => supabaseClient.auth.currentUser?.id ?? '';
 
-  bool get isAuthenticated => supabaseService.client.auth.currentUser != null;
+  bool get isAuthenticated => supabaseClient.auth.currentUser != null;
 }

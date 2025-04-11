@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:go_router/go_router.dart';
+import 'package:lottie/lottie.dart';
 
 class NotFoundScreen extends StatelessWidget {
   const NotFoundScreen({super.key});
@@ -11,24 +11,25 @@ class NotFoundScreen extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            const Text(
-              '404',
-              style: TextStyle(
-                fontSize: 48,
-                fontWeight: FontWeight.bold,
-              ),
+            Lottie.asset(
+              'assets/animations/404.json',
+              width: 300,
+              height: 300,
+            ),
+            const SizedBox(height: 24),
+            Text(
+              'Page Not Found',
+              style: Theme.of(context).textTheme.headlineMedium,
             ),
             const SizedBox(height: 16),
-            const Text(
-              'Page Not Found',
-              style: TextStyle(
-                fontSize: 24,
-              ),
+            Text(
+              'The page you are looking for does not exist.',
+              style: Theme.of(context).textTheme.bodyLarge,
             ),
-            const SizedBox(height: 32),
+            const SizedBox(height: 24),
             ElevatedButton(
-              onPressed: () => context.go('/'),
-              child: const Text('Go Home'),
+              onPressed: () => Navigator.of(context).pop(),
+              child: const Text('Go Back'),
             ),
           ],
         ),

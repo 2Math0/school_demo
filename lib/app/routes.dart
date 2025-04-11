@@ -9,6 +9,7 @@ import '../presentation/screens/profile/profile_screen.dart';
 import '../presentation/screens/settings/settings_screen.dart';
 import '../presentation/screens/notifications/notifications_screen.dart';
 import '../presentation/screens/not_found/not_found_screen.dart';
+
 // Route names as constants for easy reference
 abstract class AppRoutes {
   static const login = '/login';

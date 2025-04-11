@@ -52,10 +52,10 @@ flutter test test/unit/auth_repository_test.dart
 flutter analyze
 
 # Format code
-flutter format .
+dart format .
 
 # Fix lints
-flutter fix --apply
+dart fix --apply
 ```
 
 ## Build Commands
@@ -64,8 +64,9 @@ flutter fix --apply
 
 ```bash
 # Build for web
-flutter build web
-
+flutter build wasm
+```
+```bash
 # Build for web with specific flavor
 flutter build web --flavor production
 ```

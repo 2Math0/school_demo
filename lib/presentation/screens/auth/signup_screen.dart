@@ -34,10 +34,10 @@ class _SignupScreenState extends State<SignupScreen> {
   void _onSignUpPressed() {
     if (_formKey.currentState?.validate() ?? false) {
       context.read<AuthCubit>().signUp(
-            email: _emailController.text.trim(),
-            password: _passwordController.text.trim(),
-            fullName: _fullNameController.text.trim(),
-          );
+        email: _emailController.text.trim(),
+        password: _passwordController.text.trim(),
+        userData: {},
+      );
     }
   }
 

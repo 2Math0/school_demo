@@ -1,12 +1,11 @@
-import 'package:supabase_flutter/supabase_flutter.dart';
-import '../../core/services/supabase_service.dart';
+import '../../core/services/api_service.dart';
 import '../../core/exceptions/app_exception.dart';
 import '../models/notification.dart';
 
 class NotificationRepository {
-  final SupabaseService supabaseService;
+  final ApiService apiService;
 
-  const NotificationRepository({required this.supabaseService});
+  const NotificationRepository({required this.apiService});
 
   Future<List<Notification>> getNotifications({
     required String userId,
@@ -15,24 +14,8 @@ class NotificationRepository {
     int? offset,
   }) async {
     try {
-      PostgrestTransformBuilder<PostgrestList> query = supabaseService.client
-          .from('notifications')
-          .select()
-          .eq('user_id', userId)
-          .order('created_at', ascending: false);
-
-      if (unreadOnly == true) {
-        // query = query.appendSearchParams('read_at', ''));
-      }
-      if (limit != null) {
-        query = query.limit(limit);
-      }
-      if (offset != null) {
-        query = query.range(offset, offset + (limit ?? 10) - 1);
-      }
-
-      final response = await query;
-      return response.map((json) => Notification.fromJson(json)).toList();
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('getNotifications is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to fetch notifications',
@@ -46,11 +29,8 @@ class NotificationRepository {
     required String notificationId,
   }) async {
     try {
-      await supabaseService.client
-          .from('notifications')
-          .update({'read_at': DateTime.now().toIso8601String()})
-          .eq('id', notificationId)
-          .eq('user_id', userId);
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('markAsRead is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to mark notification as read',
@@ -61,11 +41,8 @@ class NotificationRepository {
 
   Future<void> markAllAsRead(String userId) async {
     try {
-      await supabaseService.client
-          .from('notifications')
-          .update({'read_at': DateTime.now().toIso8601String()})
-          .eq('user_id', userId)
-          .eq('read_at', '');
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('markAllAsRead is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to mark all notifications as read',
@@ -79,11 +56,8 @@ class NotificationRepository {
     required String notificationId,
   }) async {
     try {
-      await supabaseService.client
-          .from('notifications')
-          .delete()
-          .eq('id', notificationId)
-          .eq('user_id', userId);
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('deleteNotification is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to delete notification',
@@ -94,10 +68,8 @@ class NotificationRepository {
 
   Future<void> deleteAllNotifications(String userId) async {
     try {
-      await supabaseService.client
-          .from('notifications')
-          .delete()
-          .eq('user_id', userId);
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('deleteAllNotifications is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to delete all notifications',
@@ -108,14 +80,8 @@ class NotificationRepository {
 
   Future<int> getUnreadCount(String userId) async {
     try {
-      final response = await supabaseService.client
-          .from('notifications')
-          .select()
-          .eq('user_id', userId)
-          .eq('read_at', '')
-          .count();
-
-      return response.count ?? 0;
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('getUnreadCount is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to get unread count',
@@ -133,23 +99,8 @@ class NotificationRepository {
     Map<String, dynamic>? metadata,
   }) async {
     try {
-      final data = {
-        'user_id': userId,
-        'title': title,
-        'message': message,
-        'type': type,
-        'action_url': actionUrl,
-        'metadata': metadata,
-        'created_at': DateTime.now().toIso8601String(),
-      };
-
-      final response = await supabaseService.client
-          .from('notifications')
-          .insert(data)
-          .select()
-          .single();
-
-      return Notification.fromJson(response);
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('createNotification is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to create notification',
@@ -160,11 +111,8 @@ class NotificationRepository {
 
   Stream<Notification> subscribeToNotifications(String userId) {
     try {
-      return supabaseService.client
-          .from('notifications')
-          .stream(primaryKey: ['id'])
-          .eq('user_id', userId)
-          .map((event) => Notification.fromJson(event.first));
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('subscribeToNotifications is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to subscribe to notifications',

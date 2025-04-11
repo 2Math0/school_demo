@@ -4,40 +4,36 @@ abstract class CourseState extends Equatable {
   const CourseState();
 
   @override
-  List<Object?> get props => [];
+  List<Object> get props => [];
 }
 
-class CourseInitial extends CourseState {
-  const CourseInitial();
-}
+class CourseInitial extends CourseState {}
 
-class CourseLoading extends CourseState {
-  const CourseLoading();
-}
+class CourseLoading extends CourseState {}
 
 class CourseLoaded extends CourseState {
   final List<Course> courses;
 
-  const CourseLoaded({required this.courses});
+  const CourseLoaded(this.courses);
 
   @override
-  List<Object?> get props => [courses];
+  List<Object> get props => [courses];
 }
 
 class CourseDetailsLoaded extends CourseState {
   final Course course;
 
-  const CourseDetailsLoaded({required this.course});
+  const CourseDetailsLoaded(this.course);
 
   @override
-  List<Object?> get props => [course];
+  List<Object> get props => [course];
 }
 
 class CourseError extends CourseState {
   final String message;
 
-  const CourseError({required this.message});
+  const CourseError(this.message);
 
   @override
-  List<Object?> get props => [message];
+  List<Object> get props => [message];
 }

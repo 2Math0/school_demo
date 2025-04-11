@@ -1,21 +1,16 @@
-import '../../core/services/supabase_service.dart';
+import '../../core/services/api_service.dart';
 import '../../core/exceptions/app_exception.dart';
 import '../models/settings.dart';
 
 class SettingsRepository {
-  final SupabaseService supabaseService;
+  final ApiService apiService;
 
-  const SettingsRepository({required this.supabaseService});
+  const SettingsRepository({required this.apiService});
 
   Future<Settings> getSettings(String userId) async {
     try {
-      final response = await supabaseService.client
-          .from('settings')
-          .select()
-          .eq('user_id', userId)
-          .single();
-
-      return Settings.fromJson(response);
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('getSettings is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to fetch settings',
@@ -29,10 +24,8 @@ class SettingsRepository {
     required Settings settings,
   }) async {
     try {
-      await supabaseService.client
-          .from('settings')
-          .update(settings.toJson())
-          .eq('user_id', userId);
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('updateSettings is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to update settings',
@@ -43,10 +36,8 @@ class SettingsRepository {
 
   Future<void> resetSettings(String userId) async {
     try {
-      await supabaseService.client
-          .from('settings')
-          .delete()
-          .eq('user_id', userId);
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('resetSettings is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to reset settings',
@@ -60,17 +51,8 @@ class SettingsRepository {
     required String themeMode,
   }) async {
     try {
-      final response = await supabaseService.client
-          .from('user_settings')
-          .upsert({
-            'user_id': userId,
-            'theme_mode': themeMode,
-            'updated_at': DateTime.now().toIso8601String(),
-          })
-          .select()
-          .single();
-
-      return Settings.fromJson(response);
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('setThemeMode is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to set theme mode',
@@ -86,19 +68,8 @@ class SettingsRepository {
     required Map<String, bool> notificationTypes,
   }) async {
     try {
-      final response = await supabaseService.client
-          .from('user_settings')
-          .upsert({
-            'user_id': userId,
-            'email_notifications': emailNotifications,
-            'push_notifications': pushNotifications,
-            'notification_types': notificationTypes,
-            'updated_at': DateTime.now().toIso8601String(),
-          })
-          .select()
-          .single();
-
-      return Settings.fromJson(response);
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('setNotificationPreferences is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to set notification preferences',
@@ -112,17 +83,8 @@ class SettingsRepository {
     required String languageCode,
   }) async {
     try {
-      final response = await supabaseService.client
-          .from('user_settings')
-          .upsert({
-            'user_id': userId,
-            'language_code': languageCode,
-            'updated_at': DateTime.now().toIso8601String(),
-          })
-          .select()
-          .single();
-
-      return Settings.fromJson(response);
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('setLanguage is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to set language',
@@ -138,19 +100,8 @@ class SettingsRepository {
     required bool screenReader,
   }) async {
     try {
-      final response = await supabaseService.client
-          .from('user_settings')
-          .upsert({
-            'user_id': userId,
-            'high_contrast': highContrast,
-            'large_text': largeText,
-            'screen_reader': screenReader,
-            'updated_at': DateTime.now().toIso8601String(),
-          })
-          .select()
-          .single();
-
-      return Settings.fromJson(response);
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('setAccessibilitySettings is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to set accessibility settings',

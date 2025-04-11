@@ -1,14 +1,10 @@
 import 'package:supabase_flutter/supabase_flutter.dart' as supabase;
-import '../../core/services/supabase_service.dart';
 import '../../core/exceptions/app_exception.dart';
 import '../models/user.dart' as models;
 import 'base_repository.dart';
 
 class AuthRepository extends BaseRepository {
-  final SupabaseService _supabaseService;
-
-  AuthRepository({required super.supabaseService})
-      : _supabaseService = supabaseService;
+  AuthRepository({required super.apiService});
 
   Future<models.User> signUp({
     required String email,
@@ -17,16 +13,16 @@ class AuthRepository extends BaseRepository {
     bool isInstructor = false,
   }) async {
     try {
-      final response = await supabaseService.client.auth.signUp(
+      final response = await apiService.signUp(
         email: email,
         password: password,
-        data: {
+        userMetadata: {
           'full_name': fullName,
           'is_instructor': isInstructor,
         },
       );
 
-      if (response.user == null) {
+      if (response['user'] == null) {
         throw const AppException(
           message: 'Failed to create account',
           details: 'Please try again later',
@@ -34,16 +30,13 @@ class AuthRepository extends BaseRepository {
       }
 
       final user = models.User(
-        id: response.user!.id,
+        id: response['user']['id'],
         email: email,
         fullName: fullName,
         isInstructor: isInstructor,
         createdAt: DateTime.now(),
         updatedAt: DateTime.now(),
       );
-
-      // Create user profile in the database
-      await supabaseService.client.from('profiles').insert(user.toJson());
 
       return user;
     } catch (e) {
@@ -59,25 +52,19 @@ class AuthRepository extends BaseRepository {
     required String password,
   }) async {
     try {
-      final response = await supabaseService.client.auth.signInWithPassword(
+      final response = await apiService.signIn(
         email: email,
         password: password,
       );
 
-      if (response.user == null) {
+      if (response['user'] == null) {
         throw const AppException(
           message: 'Failed to sign in',
           details: 'Invalid email or password',
         );
       }
 
-      final userData = await supabaseService.client
-          .from('profiles')
-          .select()
-          .eq('id', response.user!.id)
-          .single();
-
-      return models.User.fromJson(userData);
+      return models.User.fromJson(response['user']);
     } catch (e) {
       throw AppException(
         message: 'Failed to sign in',
@@ -88,7 +75,7 @@ class AuthRepository extends BaseRepository {
 
   Future<void> signOut() async {
     try {
-      await supabaseService.client.auth.signOut();
+      await apiService.signOut();
     } catch (e) {
       throw AppException(
         message: 'Failed to sign out',
@@ -99,7 +86,7 @@ class AuthRepository extends BaseRepository {
 
   Future<void> resetPassword(String email) async {
     try {
-      await supabaseService.client.auth.resetPasswordForEmail(email);
+      await apiService.resetPassword(email);
     } catch (e) {
       throw AppException(
         message: 'Failed to send reset password email',
@@ -110,7 +97,7 @@ class AuthRepository extends BaseRepository {
 
   Future<void> updatePassword(String newPassword) async {
     try {
-      await supabaseService.client.auth.updateUser(
+      await supabaseClient.auth.updateUser(
         supabase.UserAttributes(
           password: newPassword,
         ),
@@ -125,21 +112,15 @@ class AuthRepository extends BaseRepository {
 
   Future<models.User?> getCurrentUser() async {
     try {
-      final currentUser = supabaseService.client.auth.currentUser;
+      final currentUser = supabaseClient.auth.currentUser;
       if (currentUser == null) return null;
 
-      final userData = await supabaseService.client
-          .from('profiles')
-          .select()
-          .eq('id', currentUser.id)
-          .single();
-
-      return models.User.fromJson(userData);
+      return await apiService.getUserProfile(currentUser.id);
     } catch (e) {
       return null;
     }
   }
 
   Stream<supabase.AuthState> get authStateChanges =>
-      supabaseService.client.auth.onAuthStateChange;
+      supabaseClient.auth.onAuthStateChange;
 }

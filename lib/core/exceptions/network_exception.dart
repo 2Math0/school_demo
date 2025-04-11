@@ -68,8 +68,7 @@ class NetworkExceptionHandler {
         );
 
       case DioExceptionType.unknown:
-      default:
-        return NetworkException(
+      return NetworkException(
           message: 'Network error occurred',
           details: error.message,
           stackTrace: error.stackTrace,

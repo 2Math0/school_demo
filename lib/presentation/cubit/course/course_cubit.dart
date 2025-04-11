@@ -12,7 +12,7 @@ class CourseCubit extends Cubit<CourseState> {
   CourseCubit({
     required this.courseRepository,
     required this.userId,
-  }) : super(const CourseInitial());
+  }) : super(CourseInitial());
 
   Future<void> loadCourses({
     String? category,
@@ -20,36 +20,32 @@ class CourseCubit extends Cubit<CourseState> {
     String? searchQuery,
   }) async {
     try {
-      emit(const CourseLoading());
-      final courses = await courseRepository.getCourses(
-        category: category,
-        level: level,
-        searchQuery: searchQuery,
-      );
-      emit(CourseLoaded(courses: courses));
+      emit(CourseLoading());
+      final courses = await courseRepository.getCourses();
+      emit(CourseLoaded(courses));
     } catch (e) {
-      emit(CourseError(message: e.toString()));
+      emit(CourseError(e.toString()));
     }
   }
 
   Future<void> loadCourseDetails(String courseId) async {
     try {
-      emit(const CourseLoading());
-      final course = await courseRepository.getCourseDetails(courseId);
-      emit(CourseDetailsLoaded(course: course));
+      emit(CourseLoading());
+      final course = await courseRepository.getCourseById(courseId);
+      emit(CourseDetailsLoaded(course));
     } catch (e) {
-      emit(CourseError(message: e.toString()));
+      emit(CourseError(e.toString()));
     }
   }
 
   Future<void> enrollInCourse(String courseId) async {
     try {
-      emit(const CourseLoading());
-      await courseRepository.enrollInCourse(courseId: courseId, userId: userId);
-      final course = await courseRepository.getCourseDetails(courseId);
-      emit(CourseDetailsLoaded(course: course));
+      emit(CourseLoading());
+      await courseRepository.enrollInCourse(courseId, userId);
+      final course = await courseRepository.getCourseById(courseId);
+      emit(CourseDetailsLoaded(course));
     } catch (e) {
-      emit(CourseError(message: e.toString()));
+      emit(CourseError(e.toString()));
     }
   }
 }

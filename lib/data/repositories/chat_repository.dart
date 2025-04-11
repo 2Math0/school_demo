@@ -1,12 +1,11 @@
-import 'dart:io';
-import '../../core/services/supabase_service.dart';
+import '../../core/services/api_service.dart';
 import '../../core/exceptions/app_exception.dart';
 import '../models/chat_message.dart';
 
 class ChatRepository {
-  final SupabaseService supabaseService;
+  final ApiService apiService;
 
-  const ChatRepository({required this.supabaseService});
+  const ChatRepository({required this.apiService});
 
   Future<List<ChatMessage>> getMessages({
     required String userId,
@@ -15,23 +14,8 @@ class ChatRepository {
     int? offset,
   }) async {
     try {
-      var query = supabaseService.client
-          .from('messages')
-          .select()
-          .or('sender_id.eq.$userId,recipient_id.eq.$userId')
-          .or('sender_id.eq.$recipientId,recipient_id.eq.$recipientId')
-          .order('created_at', ascending: false);
-
-      if (limit != null) {
-        query = query.limit(limit);
-      }
-
-      if (offset != null) {
-        query = query.range(offset, offset + (limit ?? 10) - 1);
-      }
-
-      final response = await query;
-      return response.map((json) => ChatMessage.fromJson(json)).toList();
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('getMessages is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to fetch messages',
@@ -42,14 +26,8 @@ class ChatRepository {
 
   Future<List<ChatMessage>> getRecentChats(String userId) async {
     try {
-      final response = await supabaseService.client
-          .from('messages')
-          .select()
-          .or('sender_id.eq.$userId,recipient_id.eq.$userId')
-          .order('created_at', ascending: false)
-          .limit(20);
-
-      return response.map((json) => ChatMessage.fromJson(json)).toList();
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('getRecentChats is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to fetch recent chats',
@@ -65,21 +43,8 @@ class ChatRepository {
     String? attachmentUrl,
   }) async {
     try {
-      final data = {
-        'sender_id': senderId,
-        'recipient_id': recipientId,
-        'content': content,
-        'attachment_url': attachmentUrl,
-        'created_at': DateTime.now().toIso8601String(),
-      };
-
-      final response = await supabaseService.client
-          .from('messages')
-          .insert(data)
-          .select()
-          .single();
-
-      return ChatMessage.fromJson(response);
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('sendMessage is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to send message',
@@ -93,11 +58,8 @@ class ChatRepository {
     required String messageId,
   }) async {
     try {
-      await supabaseService.client
-          .from('messages')
-          .update({'read_at': DateTime.now().toIso8601String()})
-          .eq('id', messageId)
-          .eq('recipient_id', userId);
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('markAsRead is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to mark message as read',
@@ -108,10 +70,8 @@ class ChatRepository {
 
   Future<void> deleteMessage(String messageId) async {
     try {
-      await supabaseService.client
-          .from('messages')
-          .delete()
-          .eq('id', messageId);
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('deleteMessage is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to delete message',
@@ -122,11 +82,8 @@ class ChatRepository {
 
   Stream<ChatMessage> subscribeToMessages(String userId) {
     try {
-      return supabaseService.client
-          .from('messages')
-          .stream(primaryKey: ['id'])
-          .eq('recipient_id', userId)
-          .map((event) => ChatMessage.fromJson(event.first));
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('subscribeToMessages is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to subscribe to messages',
@@ -137,14 +94,8 @@ class ChatRepository {
 
   Future<int> getUnreadCount(String userId) async {
     try {
-      final response = await supabaseService.client
-          .from('messages')
-          .select()
-          .eq('recipient_id', userId)
-          .eq('read_at', '')
-          .count();
-
-      return response.count ?? 0;
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('getUnreadCount is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to get unread count',
@@ -155,17 +106,8 @@ class ChatRepository {
 
   Future<String?> uploadAttachment(String filePath) async {
     try {
-      final file = File(filePath);
-      final fileName = filePath.split('/').last;
-      final path = 'chat_attachments/$fileName';
-
-      await supabaseService.client.storage
-          .from('attachments')
-          .upload(path, file);
-
-      final response =
-          supabaseService.client.storage.from('attachments').getPublicUrl(path);
-      return response;
+      // This method is not implemented in the API service yet
+      throw UnimplementedError('uploadAttachment is not implemented');
     } catch (e) {
       throw AppException(
         message: 'Failed to upload attachment',

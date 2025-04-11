@@ -1,19 +1,19 @@
 import 'package:get_it/get_it.dart';
-import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../data/repositories/repository_provider.dart';
-import 'supabase_service.dart';
+import 'api_service.dart';
+import 'supabase_api_service.dart';
 
 final GetIt getIt = GetIt.instance;
 
 Future<void> setupServiceLocator() async {
   // Services
-  getIt.registerLazySingleton<SupabaseService>(
-    () => SupabaseService(client: Supabase.instance.client),
+  getIt.registerLazySingleton<ApiService>(
+    () => SupabaseApiService(),
   );
 
   // Repository Provider
   getIt.registerLazySingleton<RepositoryProvider>(
-    () => RepositoryProvider(supabaseService: getIt<SupabaseService>()),
+    () => RepositoryProvider(apiService: getIt<ApiService>()),
   );
 
   // Individual Repositories (accessed through RepositoryProvider)

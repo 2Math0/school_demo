@@ -193,11 +193,11 @@ class _ChatScreenState extends State<ChatScreen> {
                               ? Theme.of(context)
                                   .colorScheme
                                   .onPrimary
-                                  .withOpacity(0.7)
+                                  .withAlpha(220)
                               : Theme.of(context)
                                   .colorScheme
                                   .onSurfaceVariant
-                                  .withOpacity(0.7),
+                                  .withAlpha(220),
                         ),
                   ),
                 ],
@@ -211,7 +211,7 @@ class _ChatScreenState extends State<ChatScreen> {
                   Icons.done_all,
                   size: 12,
                   color:
-                      Theme.of(context).colorScheme.onPrimary.withOpacity(0.7),
+                      Theme.of(context).colorScheme.onPrimary.withAlpha(220),
                 ),
               ),
           ],
@@ -325,7 +325,8 @@ class _ChatScreenState extends State<ChatScreen> {
                   borderSide: BorderSide.none,
                 ),
                 filled: true,
-                fillColor: Theme.of(context).colorScheme.surfaceContainerHighest,
+                fillColor:
+                    Theme.of(context).colorScheme.surfaceContainerHighest,
                 contentPadding: const EdgeInsets.symmetric(
                   horizontal: 16,
                   vertical: 8,

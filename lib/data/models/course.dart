@@ -1,39 +1,42 @@
 import 'package:equatable/equatable.dart';
-import 'base_model.dart';
-import 'user.dart';
 
-class Course extends BaseModel {
+class Course extends Equatable {
+  final String id;
   final String title;
   final String description;
-  final User instructor;
-  final String thumbnail;
+  final String instructorId;
+  final String instructorName;
+  final String instructorAvatar;
   final String category;
   final String level;
-  final int duration;
   final double rating;
-  final int totalStudents;
-  final double price;
+  final int reviews;
+  final int students;
+  final String thumbnail;
+  final List<String> objectives;
   final List<String> requirements;
-  final List<String> whatYouWillLearn;
   final List<Section> sections;
+  final DateTime createdAt;
+  final DateTime updatedAt;
 
   const Course({
-    required super.id,
+    required this.id,
     required this.title,
     required this.description,
-    required this.instructor,
-    required this.thumbnail,
+    required this.instructorId,
+    required this.instructorName,
+    required this.instructorAvatar,
     required this.category,
     required this.level,
-    required this.duration,
     required this.rating,
-    required this.totalStudents,
-    required this.price,
+    required this.reviews,
+    required this.students,
+    required this.thumbnail,
+    required this.objectives,
     required this.requirements,
-    required this.whatYouWillLearn,
     required this.sections,
-    required super.createdAt,
-    required super.updatedAt,
+    required this.createdAt,
+    required this.updatedAt,
   });
 
   factory Course.fromJson(Map<String, dynamic> json) {
@@ -41,93 +44,79 @@ class Course extends BaseModel {
       id: json['id'] as String,
       title: json['title'] as String,
       description: json['description'] as String,
-      instructor: User.fromJson(json['instructor'] as Map<String, dynamic>),
-      thumbnail: json['thumbnail'] as String,
+      instructorId: json['instructor_id'] as String,
+      instructorName: json['instructor']['name'] as String,
+      instructorAvatar: json['instructor']['avatar'] as String,
       category: json['category'] as String,
       level: json['level'] as String,
-      duration: json['duration'] as int,
       rating: (json['rating'] as num).toDouble(),
-      totalStudents: json['totalStudents'] as int,
-      price: (json['price'] as num).toDouble(),
-      requirements: (json['requirements'] as List).cast<String>(),
-      whatYouWillLearn: (json['whatYouWillLearn'] as List).cast<String>(),
+      reviews: json['reviews'] as int,
+      students: json['students'] as int,
+      thumbnail: json['thumbnail'] as String,
+      objectives: List<String>.from(json['objectives'] as List),
+      requirements: List<String>.from(json['requirements'] as List),
       sections: (json['sections'] as List)
-          .map((e) => Section.fromJson(e as Map<String, dynamic>))
+          .map((section) => Section.fromJson(section))
           .toList(),
-      createdAt: DateTime.parse(json['createdAt'] as String),
-      updatedAt: DateTime.parse(json['updatedAt'] as String),
+      createdAt: DateTime.parse(json['created_at'] as String),
+      updatedAt: DateTime.parse(json['updated_at'] as String),
     );
   }
 
-  @override
   Map<String, dynamic> toJson() {
     return {
       'id': id,
       'title': title,
       'description': description,
-      'instructor': instructor.toJson(),
-      'thumbnail': thumbnail,
+      'instructor_id': instructorId,
       'category': category,
       'level': level,
-      'duration': duration,
       'rating': rating,
-      'totalStudents': totalStudents,
-      'price': price,
+      'reviews': reviews,
+      'students': students,
+      'thumbnail': thumbnail,
+      'objectives': objectives,
       'requirements': requirements,
-      'whatYouWillLearn': whatYouWillLearn,
-      'sections': sections.map((e) => e.toJson()).toList(),
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'sections': sections.map((section) => section.toJson()).toList(),
+      'created_at': createdAt.toIso8601String(),
+      'updated_at': updatedAt.toIso8601String(),
     };
   }
 
-  Course copyWith({
-    String? id,
-    String? title,
-    String? description,
-    User? instructor,
-    String? thumbnail,
-    String? category,
-    String? level,
-    int? duration,
-    double? rating,
-    int? totalStudents,
-    double? price,
-    List<String>? requirements,
-    List<String>? whatYouWillLearn,
-    List<Section>? sections,
-    DateTime? createdAt,
-    DateTime? updatedAt,
-  }) {
-    return Course(
-      id: id ?? this.id,
-      title: title ?? this.title,
-      description: description ?? this.description,
-      instructor: instructor ?? this.instructor,
-      thumbnail: thumbnail ?? this.thumbnail,
-      category: category ?? this.category,
-      level: level ?? this.level,
-      duration: duration ?? this.duration,
-      rating: rating ?? this.rating,
-      totalStudents: totalStudents ?? this.totalStudents,
-      price: price ?? this.price,
-      requirements: requirements ?? this.requirements,
-      whatYouWillLearn: whatYouWillLearn ?? this.whatYouWillLearn,
-      sections: sections ?? this.sections,
-      createdAt: createdAt ?? this.createdAt,
-      updatedAt: updatedAt ?? this.updatedAt,
-    );
-  }
+  @override
+  List<Object> get props => [
+        id,
+        title,
+        description,
+        instructorId,
+        instructorName,
+        instructorAvatar,
+        category,
+        level,
+        rating,
+        reviews,
+        students,
+        thumbnail,
+        objectives,
+        requirements,
+        sections,
+        createdAt,
+        updatedAt,
+      ];
 }
 
 class Section extends Equatable {
   final String id;
   final String title;
+  final String description;
+  final int order;
   final List<Lesson> lessons;
 
   const Section({
     required this.id,
     required this.title,
+    required this.description,
+    required this.order,
     required this.lessons,
   });
 
@@ -135,8 +124,10 @@ class Section extends Equatable {
     return Section(
       id: json['id'] as String,
       title: json['title'] as String,
+      description: json['description'] as String,
+      order: json['order'] as int,
       lessons: (json['lessons'] as List)
-          .map((e) => Lesson.fromJson(e as Map<String, dynamic>))
+          .map((lesson) => Lesson.fromJson(lesson))
           .toList(),
     );
   }
@@ -145,36 +136,47 @@ class Section extends Equatable {
     return {
       'id': id,
       'title': title,
-      'lessons': lessons.map((e) => e.toJson()).toList(),
+      'description': description,
+      'order': order,
+      'lessons': lessons.map((lesson) => lesson.toJson()).toList(),
     };
   }
 
   @override
-  List<Object?> get props => [id, title, lessons];
+  List<Object> get props => [id, title, description, order, lessons];
 }
 
 class Lesson extends Equatable {
   final String id;
   final String title;
-  final String type;
+  final String description;
+  final String content;
+  final String videoUrl;
   final int duration;
-  final bool preview;
+  final int order;
+  final bool isPreview;
 
   const Lesson({
     required this.id,
     required this.title,
-    required this.type,
+    required this.description,
+    required this.content,
+    required this.videoUrl,
     required this.duration,
-    this.preview = false,
+    required this.order,
+    required this.isPreview,
   });
 
   factory Lesson.fromJson(Map<String, dynamic> json) {
     return Lesson(
       id: json['id'] as String,
       title: json['title'] as String,
-      type: json['type'] as String,
+      description: json['description'] as String,
+      content: json['content'] as String,
+      videoUrl: json['video_url'] as String,
       duration: json['duration'] as int,
-      preview: json['preview'] as bool? ?? false,
+      order: json['order'] as int,
+      isPreview: json['is_preview'] as bool,
     );
   }
 
@@ -182,14 +184,26 @@ class Lesson extends Equatable {
     return {
       'id': id,
       'title': title,
-      'type': type,
+      'description': description,
+      'content': content,
+      'video_url': videoUrl,
       'duration': duration,
-      'preview': preview,
+      'order': order,
+      'is_preview': isPreview,
     };
   }
 
   @override
-  List<Object?> get props => [id, title, type, duration, preview];
+  List<Object> get props => [
+        id,
+        title,
+        description,
+        content,
+        videoUrl,
+        duration,
+        order,
+        isPreview,
+      ];
 }
 
 class CourseContent extends Equatable {

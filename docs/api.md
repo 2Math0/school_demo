@@ -1,48 +1,59 @@
 # School Demo API Documentation
 
+## Base URL
+```
+https://your-supabase-project.supabase.co/rest/v1
+```
+
 ## Authentication
 
 ### Sign Up
-
 ```http
-POST /auth/signup
+POST /auth/v1/signup
 ```
 
 Request Body:
-
 ```json
 {
   "email": "user@example.com",
   "password": "password123",
-  "fullName": "John Doe",
-  "isInstructor": false
+  "user_metadata": {
+    "fullName": "John Doe",
+    "isInstructor": false,
+    "avatar": "https://example.com/avatar.jpg",
+    "bio": "Software developer"
+  }
 }
 ```
 
 Response:
-
 ```json
 {
   "user": {
     "id": "123e4567-e89b-12d3-a456-426614174000",
     "email": "user@example.com",
-    "fullName": "John Doe",
-    "isInstructor": false,
-    "createdAt": "2024-04-06T12:00:00Z",
-    "updatedAt": "2024-04-06T12:00:00Z"
+    "user_metadata": {
+      "fullName": "John Doe",
+      "isInstructor": false,
+      "avatar": "https://example.com/avatar.jpg",
+      "bio": "Software developer"
+    },
+    "created_at": "2024-04-06T12:00:00Z",
+    "updated_at": "2024-04-06T12:00:00Z"
   },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "session": {
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
 }
 ```
 
 ### Sign In
-
 ```http
-POST /auth/signin
+POST /auth/v1/token?grant_type=password
 ```
 
 Request Body:
-
 ```json
 {
   "email": "user@example.com",
@@ -51,367 +62,375 @@ Request Body:
 ```
 
 Response:
-
 ```json
 {
   "user": {
     "id": "123e4567-e89b-12d3-a456-426614174000",
     "email": "user@example.com",
-    "fullName": "John Doe",
-    "isInstructor": false,
-    "createdAt": "2024-04-06T12:00:00Z",
-    "updatedAt": "2024-04-06T12:00:00Z"
+    "user_metadata": {
+      "fullName": "John Doe",
+      "isInstructor": false,
+      "avatar": "https://example.com/avatar.jpg",
+      "bio": "Software developer"
+    }
   },
-  "token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  "session": {
+    "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9...",
+    "refresh_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..."
+  }
 }
 ```
 
 ### Sign Out
-
 ```http
-POST /auth/signout
+POST /auth/v1/logout
+```
+
+Headers:
+```
+Authorization: Bearer {access_token}
 ```
 
 Response:
-
 ```json
 {
-  "success": true,
-  "message": "Successfully signed out"
+  "success": true
 }
 ```
 
-## Courses
-
-### Get All Courses
-
+### Forgot Password
 ```http
-GET /courses
-```
-
-Query Parameters:
-
-- `page`: Page number (default: 1)
-- `limit`: Items per page (default: 10)
-- `category`: Filter by category
-- `level`: Filter by level (beginner, intermediate, advanced)
-- `search`: Search query
-
-Response:
-
-```json
-{
-  "courses": [
-    {
-      "id": "123e4567-e89b-12d3-a456-426614174000",
-      "title": "Introduction to Flutter",
-      "description": "Learn Flutter from scratch",
-      "instructor": {
-        "id": "123e4567-e89b-12d3-a456-426614174001",
-        "fullName": "Jane Smith",
-        "avatar": "https://example.com/avatar.jpg"
-      },
-      "thumbnail": "https://example.com/thumbnail.jpg",
-      "category": "Mobile Development",
-      "level": "beginner",
-      "duration": 120,
-      "rating": 4.5,
-      "totalStudents": 1000,
-      "price": 49.99,
-      "createdAt": "2024-04-06T12:00:00Z",
-      "updatedAt": "2024-04-06T12:00:00Z"
-    }
-  ],
-  "total": 100,
-  "page": 1,
-  "limit": 10
-}
-```
-
-### Get Course Details
-
-```http
-GET /courses/{courseId}
-```
-
-Response:
-
-```json
-{
-  "id": "123e4567-e89b-12d3-a456-426614174000",
-  "title": "Introduction to Flutter",
-  "description": "Learn Flutter from scratch",
-  "instructor": {
-    "id": "123e4567-e89b-12d3-a456-426614174001",
-    "fullName": "Jane Smith",
-    "avatar": "https://example.com/avatar.jpg",
-    "bio": "Experienced Flutter developer",
-    "totalStudents": 5000,
-    "totalCourses": 10
-  },
-  "sections": [
-    {
-      "id": "123e4567-e89b-12d3-a456-426614174002",
-      "title": "Getting Started",
-      "lessons": [
-        {
-          "id": "123e4567-e89b-12d3-a456-426614174003",
-          "title": "Introduction",
-          "type": "video",
-          "duration": 15,
-          "preview": true
-        }
-      ]
-    }
-  ],
-  "requirements": [
-    "Basic programming knowledge",
-    "Dart programming language"
-  ],
-  "whatYouWillLearn": [
-    "Flutter basics",
-    "Widgets and layouts",
-    "State management"
-  ],
-  "thumbnail": "https://example.com/thumbnail.jpg",
-  "category": "Mobile Development",
-  "level": "beginner",
-  "duration": 120,
-  "rating": 4.5,
-  "totalStudents": 1000,
-  "price": 49.99,
-  "createdAt": "2024-04-06T12:00:00Z",
-  "updatedAt": "2024-04-06T12:00:00Z"
-}
-```
-
-## Progress
-
-### Get Course Progress
-
-```http
-GET /progress/{courseId}
-```
-
-Response:
-
-```json
-{
-  "courseId": "123e4567-e89b-12d3-a456-426614174000",
-  "userId": "123e4567-e89b-12d3-a456-426614174001",
-  "completedLessons": [
-    "123e4567-e89b-12d3-a456-426614174003"
-  ],
-  "currentLesson": "123e4567-e89b-12d3-a456-426614174004",
-  "progress": 25,
-  "lastAccessed": "2024-04-06T12:00:00Z",
-  "createdAt": "2024-04-06T12:00:00Z",
-  "updatedAt": "2024-04-06T12:00:00Z"
-}
-```
-
-### Update Progress
-
-```http
-PUT /progress/{courseId}
+POST /auth/v1/recover
 ```
 
 Request Body:
-
 ```json
 {
-  "lessonId": "123e4567-e89b-12d3-a456-426614174004",
-  "completed": true
+  "email": "user@example.com"
 }
 ```
 
 Response:
-
 ```json
 {
   "success": true,
-  "message": "Progress updated successfully"
-}
-```
-
-## Chat
-
-### Get Messages
-
-```http
-GET /chat/messages
-```
-
-Query Parameters:
-
-- `userId`: User ID to chat with
-- `page`: Page number (default: 1)
-- `limit`: Messages per page (default: 20)
-
-Response:
-
-```json
-{
-  "messages": [
-    {
-      "id": "123e4567-e89b-12d3-a456-426614174005",
-      "senderId": "123e4567-e89b-12d3-a456-426614174001",
-      "receiverId": "123e4567-e89b-12d3-a456-426614174002",
-      "content": "Hello!",
-      "type": "text",
-      "read": true,
-      "createdAt": "2024-04-06T12:00:00Z"
-    }
-  ],
-  "total": 100,
-  "page": 1,
-  "limit": 20
-}
-```
-
-### Send Message
-
-```http
-POST /chat/messages
-```
-
-Request Body:
-
-```json
-{
-  "receiverId": "123e4567-e89b-12d3-a456-426614174002",
-  "content": "Hello!",
-  "type": "text"
-}
-```
-
-Response:
-
-```json
-{
-  "id": "123e4567-e89b-12d3-a456-426614174005",
-  "senderId": "123e4567-e89b-12d3-a456-426614174001",
-  "receiverId": "123e4567-e89b-12d3-a456-426614174002",
-  "content": "Hello!",
-  "type": "text",
-  "read": false,
-  "createdAt": "2024-04-06T12:00:00Z"
-}
-```
-
-## Notifications
-
-### Get Notifications
-
-```http
-GET /notifications
-```
-
-Query Parameters:
-
-- `page`: Page number (default: 1)
-- `limit`: Notifications per page (default: 20)
-- `read`: Filter by read status (true/false)
-
-Response:
-
-```json
-{
-  "notifications": [
-    {
-      "id": "123e4567-e89b-12d3-a456-426614174006",
-      "userId": "123e4567-e89b-12d3-a456-426614174001",
-      "type": "course_update",
-      "title": "New Lesson Available",
-      "message": "A new lesson has been added to your course",
-      "data": {
-        "courseId": "123e4567-e89b-12d3-a456-426614174000",
-        "lessonId": "123e4567-e89b-12d3-a456-426614174004"
-      },
-      "read": false,
-      "createdAt": "2024-04-06T12:00:00Z"
-    }
-  ],
-  "total": 50,
-  "page": 1,
-  "limit": 20
-}
-```
-
-### Mark Notification as Read
-
-```http
-PUT /notifications/{notificationId}/read
-```
-
-Response:
-
-```json
-{
-  "success": true,
-  "message": "Notification marked as read"
+  "message": "Password reset email sent"
 }
 ```
 
 ## User Profile
 
 ### Get User Profile
-
 ```http
 GET /users/{userId}
 ```
 
-Response:
+Headers:
+```
+Authorization: Bearer {access_token}
+```
 
+Response:
 ```json
 {
-  "id": "123e4567-e89b-12d3-a456-426614174001",
+  "id": "123e4567-e89b-12d3-a456-426614174000",
   "email": "user@example.com",
-  "fullName": "John Doe",
-  "avatar": "https://example.com/avatar.jpg",
-  "bio": "Software developer",
-  "isInstructor": false,
-  "enrolledCourses": [
+  "user_metadata": {
+    "fullName": "John Doe",
+    "isInstructor": false,
+    "avatar": "https://example.com/avatar.jpg",
+    "bio": "Software developer"
+  },
+  "enrolled_courses": [
     {
-      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "id": "123e4567-e89b-12d3-a456-426614174001",
       "title": "Introduction to Flutter",
+      "thumbnail": "https://example.com/thumbnail.jpg",
       "progress": 25,
-      "lastAccessed": "2024-04-06T12:00:00Z"
+      "last_accessed": "2024-04-06T12:00:00Z"
     }
   ],
-  "createdAt": "2024-04-06T12:00:00Z",
-  "updatedAt": "2024-04-06T12:00:00Z"
+  "created_at": "2024-04-06T12:00:00Z",
+  "updated_at": "2024-04-06T12:00:00Z"
 }
 ```
 
 ### Update User Profile
-
 ```http
-PUT /users/{userId}
+PATCH /users/{userId}
+```
+
+Headers:
+```
+Authorization: Bearer {access_token}
 ```
 
 Request Body:
-
 ```json
 {
-  "fullName": "John Doe",
-  "bio": "Software developer",
-  "avatar": "https://example.com/new-avatar.jpg"
+  "user_metadata": {
+    "fullName": "John Doe",
+    "bio": "Senior Software Developer",
+    "avatar": "https://example.com/new-avatar.jpg"
+  }
 }
 ```
 
 Response:
+```json
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "email": "user@example.com",
+  "user_metadata": {
+    "fullName": "John Doe",
+    "isInstructor": false,
+    "avatar": "https://example.com/new-avatar.jpg",
+    "bio": "Senior Software Developer"
+  },
+  "created_at": "2024-04-06T12:00:00Z",
+  "updated_at": "2024-04-06T12:00:00Z"
+}
+```
 
+## Courses
+
+### Get All Courses
+```http
+GET /courses
+```
+
+Headers:
+```
+Authorization: Bearer {access_token}
+```
+
+Query Parameters:
+- `select`: Fields to return (default: *)
+- `order`: Sort order (e.g., "created_at.desc")
+- `limit`: Items per page (default: 10)
+- `offset`: Offset for pagination
+- `category`: Filter by category
+- `level`: Filter by level
+- `search`: Search query
+- `is_featured`: Filter featured courses (true/false)
+- `is_popular`: Filter popular courses (true/false)
+
+Response:
+```json
+{
+  "data": [
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174000",
+      "title": "Introduction to Flutter",
+      "description": "Learn Flutter from scratch",
+      "instructor_id": "123e4567-e89b-12d3-a456-426614174001",
+      "instructor": {
+        "id": "123e4567-e89b-12d3-a456-426614174001",
+        "name": "Jane Smith",
+        "avatar": "https://example.com/avatar.jpg"
+      },
+      "category": "Mobile Development",
+      "level": "beginner",
+      "rating": 4.5,
+      "reviews": 100,
+      "students": 1000,
+      "thumbnail": "https://example.com/thumbnail.jpg",
+      "objectives": ["Learn Flutter basics", "Build your first app"],
+      "requirements": ["Basic programming knowledge"],
+      "is_featured": true,
+      "is_popular": true,
+      "created_at": "2024-04-06T12:00:00Z",
+      "updated_at": "2024-04-06T12:00:00Z"
+    }
+  ],
+  "count": 100
+}
+```
+
+### Get Course Details
+```http
+GET /courses/{courseId}
+```
+
+Headers:
+```
+Authorization: Bearer {access_token}
+```
+
+Response:
+```json
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "title": "Introduction to Flutter",
+  "description": "Learn Flutter from scratch",
+  "instructor_id": "123e4567-e89b-12d3-a456-426614174001",
+  "instructor": {
+    "id": "123e4567-e89b-12d3-a456-426614174001",
+    "name": "Jane Smith",
+    "avatar": "https://example.com/avatar.jpg",
+    "bio": "Experienced Flutter developer",
+    "total_students": 5000,
+    "total_courses": 10
+  },
+  "sections": [
+    {
+      "id": "123e4567-e89b-12d3-a456-426614174002",
+      "title": "Getting Started",
+      "description": "Introduction to the course",
+      "order": 1,
+      "lessons": [
+        {
+          "id": "123e4567-e89b-12d3-a456-426614174003",
+          "title": "Introduction",
+          "description": "Course overview",
+          "content": "Welcome to the course...",
+          "video_url": "https://example.com/video.mp4",
+          "duration": 15,
+          "order": 1,
+          "is_preview": true
+        }
+      ]
+    }
+  ],
+  "category": "Mobile Development",
+  "level": "beginner",
+  "rating": 4.5,
+  "reviews": 100,
+  "students": 1000,
+  "thumbnail": "https://example.com/thumbnail.jpg",
+  "objectives": ["Learn Flutter basics", "Build your first app"],
+  "requirements": ["Basic programming knowledge"],
+  "is_featured": true,
+  "is_popular": true,
+  "created_at": "2024-04-06T12:00:00Z",
+  "updated_at": "2024-04-06T12:00:00Z"
+}
+```
+
+### Enroll in Course
+```http
+POST /enrollments
+```
+
+Headers:
+```
+Authorization: Bearer {access_token}
+```
+
+Request Body:
+```json
+{
+  "course_id": "123e4567-e89b-12d3-a456-426614174000"
+}
+```
+
+Response:
 ```json
 {
   "id": "123e4567-e89b-12d3-a456-426614174001",
-  "email": "user@example.com",
-  "fullName": "John Doe",
-  "avatar": "https://example.com/new-avatar.jpg",
-  "bio": "Software developer",
-  "isInstructor": false,
-  "createdAt": "2024-04-06T12:00:00Z",
-  "updatedAt": "2024-04-06T12:00:00Z"
+  "user_id": "123e4567-e89b-12d3-a456-426614174002",
+  "course_id": "123e4567-e89b-12d3-a456-426614174000",
+  "enrolled_at": "2024-04-06T12:00:00Z"
+}
+```
+
+## Progress
+
+### Get Course Progress
+```http
+GET /progress?course_id=eq.{courseId}&user_id=eq.{userId}
+```
+
+Headers:
+```
+Authorization: Bearer {access_token}
+```
+
+Response:
+```json
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "course_id": "123e4567-e89b-12d3-a456-426614174001",
+  "user_id": "123e4567-e89b-12d3-a456-426614174002",
+  "completed_lessons": ["123e4567-e89b-12d3-a456-426614174003"],
+  "current_lesson": "123e4567-e89b-12d3-a456-426614174004",
+  "progress": 25,
+  "last_accessed": "2024-04-06T12:00:00Z",
+  "created_at": "2024-04-06T12:00:00Z",
+  "updated_at": "2024-04-06T12:00:00Z"
+}
+```
+
+### Update Progress
+```http
+PATCH /progress?id=eq.{progressId}
+```
+
+Headers:
+```
+Authorization: Bearer {access_token}
+```
+
+Request Body:
+```json
+{
+  "completed_lessons": ["123e4567-e89b-12d3-a456-426614174004"],
+  "current_lesson": "123e4567-e89b-12d3-a456-426614174005",
+  "progress": 30,
+  "last_accessed": "2024-04-06T12:00:00Z"
+}
+```
+
+Response:
+```json
+{
+  "id": "123e4567-e89b-12d3-a456-426614174000",
+  "course_id": "123e4567-e89b-12d3-a456-426614174001",
+  "user_id": "123e4567-e89b-12d3-a456-426614174002",
+  "completed_lessons": ["123e4567-e89b-12d3-a456-426614174004"],
+  "current_lesson": "123e4567-e89b-12d3-a456-426614174005",
+  "progress": 30,
+  "last_accessed": "2024-04-06T12:00:00Z"
+}
+```
+
+## Storage
+
+### Upload Course Thumbnail
+```http
+POST /storage/v1/object/course-thumbnails/{filename}
+```
+
+Headers:
+```
+Authorization: Bearer {access_token}
+Content-Type: image/jpeg
+```
+
+Response:
+```json
+{
+  "Key": "course-thumbnails/example.jpg",
+  "Location": "https://your-supabase-project.supabase.co/storage/v1/object/public/course-thumbnails/example.jpg"
+}
+```
+
+### Upload Lesson Video
+```http
+POST /storage/v1/object/lesson-videos/{filename}
+```
+
+Headers:
+```
+Authorization: Bearer {access_token}
+Content-Type: video/mp4
+```
+
+Response:
+```json
+{
+  "Key": "lesson-videos/example.mp4",
+  "Location": "https://your-supabase-project.supabase.co/storage/v1/object/public/lesson-videos/example.mp4"
 }
 ```
 
@@ -419,51 +438,18 @@ Response:
 
 All endpoints may return the following error responses:
 
-### 400 Bad Request
-
 ```json
 {
-  "error": "Bad Request",
-  "message": "Invalid request parameters",
-  "details": {
-    "field": "email",
-    "message": "Invalid email format"
+  "error": {
+    "message": "Error message",
+    "status": 400
   }
 }
 ```
 
-### 401 Unauthorized
-
-```json
-{
-  "error": "Unauthorized",
-  "message": "Authentication required"
-}
-```
-
-### 403 Forbidden
-
-```json
-{
-  "error": "Forbidden",
-  "message": "You don't have permission to access this resource"
-}
-```
-
-### 404 Not Found
-
-```json
-{
-  "error": "Not Found",
-  "message": "Resource not found"
-}
-```
-
-### 500 Internal Server Error
-
-```json
-{
-  "error": "Internal Server Error",
-  "message": "Something went wrong"
-}
-```
+Common error codes:
+- 400: Bad Request
+- 401: Unauthorized
+- 403: Forbidden
+- 404: Not Found
+- 500: Internal Server Error
