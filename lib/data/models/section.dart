@@ -39,8 +39,8 @@ class Section extends BaseModel {
       'description': description,
       'courseId': courseId,
       'lessons': lessons.map((e) => e.toJson()).toList(),
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 

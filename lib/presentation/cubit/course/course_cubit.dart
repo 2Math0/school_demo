@@ -7,12 +7,16 @@ part 'course_state.dart';
 
 class CourseCubit extends Cubit<CourseState> {
   final CourseRepository courseRepository;
-  final String userId;
+  String userId;
 
   CourseCubit({
     required this.courseRepository,
     required this.userId,
   }) : super(CourseInitial());
+
+  void updateUserId(String newUserId) {
+    userId = newUserId;
+  }
 
   Future<void> loadCourses({
     String? category,

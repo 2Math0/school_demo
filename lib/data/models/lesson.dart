@@ -48,8 +48,8 @@ class Lesson extends BaseModel {
       'isCompleted': isCompleted,
       'sectionId': sectionId,
       'courseId': courseId,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 

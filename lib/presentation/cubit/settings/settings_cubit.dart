@@ -5,12 +5,16 @@ import 'settings_state.dart';
 
 class SettingsCubit extends Cubit<SettingsState> {
   final SettingsRepository settingsRepository;
-  final String userId;
+  String userId;
 
   SettingsCubit({
     required this.settingsRepository,
     required this.userId,
   }) : super(const SettingsInitial());
+
+  void updateUserId(String newUserId) {
+    userId = newUserId;
+  }
 
   Future<void> loadSettings() async {
     try {

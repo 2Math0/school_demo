@@ -44,8 +44,8 @@ class Notification extends BaseModel {
       'message': message,
       'data': data,
       'read': read,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 

@@ -51,8 +51,8 @@ class Progress extends BaseModel {
       'currentLesson': currentLesson,
       'progress': progress,
       'lastAccessed': lastAccessed.toIso8601String(),
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
       'totalLessons': totalLessons,
     };
   }

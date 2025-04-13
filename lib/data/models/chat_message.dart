@@ -40,8 +40,8 @@ class ChatMessage extends BaseModel {
       'content': content,
       'type': type,
       'read': read,
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 

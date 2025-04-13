@@ -9,7 +9,8 @@ class User extends BaseModel {
   final bool isInstructor;
   final List<EnrolledCourse>? enrolledCourses;
 
-  const User({
+
+  const User( {
     required super.id,
     required this.email,
     required this.fullName,
@@ -49,8 +50,8 @@ class User extends BaseModel {
       'bio': bio,
       'isInstructor': isInstructor,
       'enrolledCourses': enrolledCourses?.map((e) => e.toJson()).toList(),
-      'createdAt': createdAt.toIso8601String(),
-      'updatedAt': updatedAt.toIso8601String(),
+      'createdAt': createdAt?.toIso8601String(),
+      'updatedAt': updatedAt?.toIso8601String(),
     };
   }
 

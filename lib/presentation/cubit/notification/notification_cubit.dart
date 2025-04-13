@@ -7,12 +7,16 @@ part 'notification_state.dart';
 
 class NotificationCubit extends Cubit<NotificationState> {
   final NotificationRepository notificationRepository;
-  final String userId;
+  String userId;
 
   NotificationCubit({
     required this.notificationRepository,
     required this.userId,
   }) : super(const NotificationInitial());
+
+  void updateUserId(String newUserId) {
+    userId = newUserId;
+  }
 
   Future<void> loadNotifications({bool unreadOnly = false}) async {
     try {

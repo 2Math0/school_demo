@@ -7,12 +7,16 @@ part 'chat_state.dart';
 
 class ChatCubit extends Cubit<ChatState> {
   final ChatRepository chatRepository;
-  final String userId;
+  String userId;
 
   ChatCubit({
     required this.chatRepository,
     required this.userId,
   }) : super(const ChatInitial());
+
+  void updateUserId(String newUserId) {
+    userId = newUserId;
+  }
 
   Future<void> loadMessages(String recipientId) async {
     try {

@@ -3,6 +3,10 @@ import 'package:equatable/equatable.dart';
 import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/services/api_service.dart';
+import '../course/course_cubit.dart';
+import '../chat/chat_cubit.dart';
+import '../notification/notification_cubit.dart';
+import '../settings/settings_cubit.dart';
 
 part 'auth_state.dart';
 
@@ -14,7 +18,8 @@ class AuthCubit extends Cubit<AuthState> {
         super(AuthInitial()) {
     Supabase.instance.client.auth.onAuthStateChange.listen((event) {
       if (event.session != null) {
-        emit(AuthAuthenticated(user: event.session!.user));
+        final user = event.session!.user;
+        emit(AuthAuthenticated(user: user));
       } else {
         emit(AuthUnauthenticated());
       }

@@ -17,7 +17,6 @@ class MockDataProvider {
       final List<dynamic> jsonList = json.decode(jsonString);
       return jsonList.map((json) => Course.fromJson(json)).toList();
     } catch (e) {
-      // Return hardcoded mock data if file loading fails
       return [
         Course(
           id: '1',
