@@ -1,5 +1,6 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:equatable/equatable.dart';
+import 'package:logger/logger.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import '../../../core/services/api_service.dart';
 
@@ -28,7 +29,7 @@ class AuthCubit extends Cubit<AuthState> {
     try {
       emit(AuthLoading());
       final response = await _apiService.signUp(
-        email: email,
+        email: email.trim(),
         password: password,
         userMetadata: userData,
       );
@@ -43,6 +44,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthUnauthenticated());
       }
     } catch (e) {
+      Logger().e(e.toString());
       emit(AuthError(message: e.toString()));
     }
   }
@@ -64,6 +66,7 @@ class AuthCubit extends Cubit<AuthState> {
         emit(AuthUnauthenticated());
       }
     } catch (e) {
+      Logger().e(e.toString());
       emit(AuthError(message: e.toString()));
     }
   }
@@ -74,6 +77,7 @@ class AuthCubit extends Cubit<AuthState> {
       await _apiService.signOut();
       emit(AuthUnauthenticated());
     } catch (e) {
+      Logger().e(e.toString());
       emit(AuthError(message: e.toString()));
     }
   }
@@ -84,6 +88,7 @@ class AuthCubit extends Cubit<AuthState> {
       await _apiService.resetPassword(email);
       emit(AuthUnauthenticated());
     } catch (e) {
+      Logger().e(e.toString());
       emit(AuthError(message: e.toString()));
     }
   }

@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:provider/provider.dart';
+import 'package:school_demo/presentation/cubit/course/course_cubit.dart';
 import '../core/services/api_service.dart';
 import '../core/services/supabase_api_service.dart';
 import '../core/theme/app_theme.dart';
@@ -26,6 +27,7 @@ class App extends StatelessWidget {
         BlocProvider(
           create: (context) => ThemeCubit(),
         ),
+
       ],
       child: BlocBuilder<ThemeCubit, ThemeState>(
         builder: (context, state) {

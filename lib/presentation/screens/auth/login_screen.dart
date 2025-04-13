@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:go_router/go_router.dart';
+import 'package:school_demo/presentation/router/app_router.dart';
 import '../../cubit/auth/auth_cubit.dart';
 import '../../widgets/common/custom_text_field.dart';
 
@@ -139,7 +140,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       ),
                       TextButton(
                         onPressed: () {
-                          // TODO: Navigate to register screen
+                          context.go(AppRoutes.register);
                         },
                         child: const Text('Sign Up'),
                       ),

@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:go_router/go_router.dart';
+import 'package:logger/web.dart';
+import 'package:school_demo/app/routes.dart';
 import '../../cubit/auth/auth_cubit.dart';
 
 class RegisterScreen extends StatefulWidget {
@@ -187,7 +190,7 @@ class _RegisterScreenState extends State<RegisterScreen> {
                       ),
                       TextButton(
                         onPressed: () {
-                          // TODO: Navigate to login screen
+                          context.go(AppRoutes.login);
                         },
                         child: const Text('Sign In'),
                       ),

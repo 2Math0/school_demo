@@ -4,8 +4,8 @@ class AppConstants {
   static const String mockDataPath = 'assets/mock_data/';
 
   // Supabase Configuration
-  static const String supabaseUrl = 'YOUR_SUPABASE_URL';
-  static const String supabaseAnonKey = 'YOUR_SUPABASE_ANON_KEY';
+  static const String supabaseUrl = 'https://spyojqjtszjzpnvylsow.supabase.co';
+  static const String supabaseAnonKey = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InNweW9qcWp0c3pqenBudnlsc293Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NDQ1NjM4NjUsImV4cCI6MjA2MDEzOTg2NX0._XCup7wrUfOhPVH8WOkMp8SwAgobNbZbYfg9xcHjNeU';
 
   // Table names
   static const String usersTable = 'users';

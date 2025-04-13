@@ -70,6 +70,7 @@ GoRouter createRouter() {
       GoRoute(
         path: AppRoutes.courseDetails,
         builder: (context, state) {
+
           final courseId = state.pathParameters['id']!;
           return CourseDetailsScreen(courseId: courseId);
         },

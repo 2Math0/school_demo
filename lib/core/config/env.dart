@@ -16,7 +16,7 @@ class Env {
     assert(supabaseUrl.isNotEmpty, 'SUPABASE_URL is not set in .env file');
     assert(supabaseAnonKey.isNotEmpty,
         'SUPABASE_ANON_KEY is not set in .env file');
-    assert(supabaseServiceRoleKey.isNotEmpty,
-        'SUPABASE_SERVICE_ROLE_KEY is not set in .env file');
+    // assert(supabaseServiceRoleKey.isNotEmpty,
+    //     'SUPABASE_SERVICE_ROLE_KEY is not set in .env file');
   }
 }
